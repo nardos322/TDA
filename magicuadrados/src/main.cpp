@@ -2,14 +2,19 @@
 #include <vector>
 using namespace std;
 
+/**
+ * Verifica si un tablero es un cuadrado mágico.
+ * @param board Tablero a verificar.
+ * @return true si el tablero es un cuadrado mágico, false en caso contrario.
+ */
 bool esMagico(const vector<vector<int>>& board) {
     const size_t n = board.size();
     const size_t sumaMagica = n * (n * n + 1) / 2;
     int sumaDiagonal1 = 0, sumaDiagonal2 = 0;
 
-    for (const auto& f : board) {
+    for (const auto& fila : board) {
         int sumaFila = 0;
-        for (const auto num : f) {
+        for (const auto num : fila) {
             sumaFila += num;
         }
         if (sumaFila != sumaMagica) {
@@ -40,6 +45,13 @@ bool esMagico(const vector<vector<int>>& board) {
 }
 
 
+/**
+ * Función que realiza el backtracking para encontrar y mostrar todos los cuadrados mágicos.
+ * @param board Tablero actual.
+ * @param used Vector que indica qué números ya han sido usados.
+ * @param i Fila actual.
+ * @param j Columna actual.
+ */
 void backtrack(vector<vector<int>>& board, vector<bool>& used, int i, int j) {
     const int n = board.size();
     if (i == n) {
@@ -70,8 +82,36 @@ void backtrack(vector<vector<int>>& board, vector<bool>& used, int i, int j) {
         }
     }
 
+}
 
+bool poda (const vector<vector<int>>& board, int i, int j) {
+    const size_t n = board.size();
+    const size_t sumaMagica = n * (n * n + 1) / 2;
+    int sumaFila = 0, sumaColumna = 0;
 
+    for (int k = 0; k <= j; k++) {
+        sumaFila += board[i][k];
+        if (sumaFila > sumaMagica) {
+            return false;
+        }
+    }
+
+    for (int l = i; l >= j; l--) {
+        sumaColumna += board[l][j];
+        if (sumaColumna > sumaMagica) {
+            return false;
+        }
+    }
+
+    if (i == j) {
+        int sumaDiagonal1 = 0;
+        for (int k = i; k >= 0; k--) {
+            sumaDiagonal1 += board[k][k];
+            if (sumaDiagonal1 > sumaMagica) {
+                return false;
+            }
+        }
+    }
 
 }
 
