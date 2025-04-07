@@ -1,0 +1,20 @@
+# Archivos y directorios generados por CMake
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/Makefile
+
+# Archivos de compilación
+**/*.o
+**/*.obj
+**/*.so
+**/*.exe
+**/*.dll
+**/*.out
+
+# Archivos de configuración de IDE
+**/.idea/
+**/.vscode/
+
+# Directorios de construcción
+**/cmake-build-debug/
