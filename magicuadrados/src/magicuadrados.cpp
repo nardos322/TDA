@@ -139,9 +139,10 @@ bool poda (const vector<vector<int>>& board, const int i, const int j) {
  * @param used Vector que indica qué números ya han sido usados.
  * @param i Fila actual.
  * @param j Columna actual.
+ * * @param count referencia al contador de cuantos cuadradosMagicos encontrados hay
  * (i, j) indica la celda actual que estamos intentando llenar
  * used[v] indica si el numero v ya esta usado en el tablero
- * @param count referencia al contador de cuantos cuadradosMagicos encontrados hay
+
  */
 void backtrack(vector<vector<int>>& board, vector<bool>& used, int i, int j, int& count) {
     const int n = board.size();
