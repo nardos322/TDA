@@ -1,33 +1,28 @@
 #include <iostream>
-#include <vector>
 #include <string>
 #include <cmath>
 
 using namespace std;
 
-
-int probabilidad(const string& a, const string& b) {
-    int sumaAvanzarA = 0, sumaRetrocederA = 0, sumaAvanzarB = 0, sumaRetrocederB = 0;
-    int posParcialA = 0, posParcialB = 0;
+int posicion(const string& a) {
+    int sumaAvanzar = 0, sumaRetroceder = 0;
     for(int i = 0; i < a.size(); i++) {
         if (a[i] == '+') {
-            sumaAvanzarA++;
+            sumaAvanzar++;
         } else {
-            sumaRetrocederA++;
-        }
-
-    }
-    for(int i = 0; i < b.size(); i++) {
-        if (b[i] == '+') {
-            sumaAvanzarB++;
-        } else {
-            sumaRetrocederB++;
+            sumaRetroceder++;
         }
     }
-    posParcialA = sumaAvanzarA - sumaRetrocederA;
-    posParcialB = sumaAvanzarB - sumaRetrocederB;
+    return sumaAvanzar - sumaRetroceder;
+}
 
-    if (posParcialA == posParcialB) {
+
+int probabilidad(const string& a, const string& b) {
+
+    const int posDeseada = posicion(a);
+    const int posParcialB = posicion(b);
+
+    if (posDeseada == posParcialB) {
         return 1;
     }
     return 0;
@@ -37,9 +32,11 @@ int probabilidad(const string& a, const string& b) {
 void backtrack(const string& a ,string& b, int i, int& c, int d) {
 
     if (i == b.length()) {
-        if (b == a) {
+
+        if (probabilidad(a, b) == 1) {
             c++;
         }
+        cout << b << endl;
         return;
     }
 
@@ -53,8 +50,6 @@ void backtrack(const string& a ,string& b, int i, int& c, int d) {
     } else {
         backtrack(a, b, i + 1, c, d);
     }
-
-
 
 
 
