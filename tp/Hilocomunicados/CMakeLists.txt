@@ -13,7 +13,8 @@ enable_testing()
 
 add_executable(Hilocomunicados
     src/main.cpp)
-add_executable(tests tests/tests_hilo.cpp)
+add_executable(tests  tests/tests_hilo.cpp )
+target_compile_definitions(tests PRIVATE LOCAL)
 target_link_libraries(tests GTest::gtest_main GTest::gtest)
 include(GoogleTest)
 gtest_discover_tests(tests)
