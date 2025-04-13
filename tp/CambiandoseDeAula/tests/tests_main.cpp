@@ -14,3 +14,55 @@ TEST(CaminosMinimos, MatrizNxM) {
         }
     }
 }
+
+TEST(CambiandoseDeAula, ExisteCamino) {
+    bool existeCamino = false;
+    vector<int> caminos;
+    vector<vector<int>> matriz = {
+        {1, -1, -1, -1},
+        {-1, 1, 1, -1},
+        {1, 1, 1, -1}
+    };
+
+
+    backtrack(0,0, matriz.size(), matriz[0].size(), matriz, caminos, existeCamino);
+    EXPECT_EQ(existeCamino, true);
+}
+
+TEST(CambiandoseDeAula, test1) {
+    bool existeCamino = false;
+    vector<int> caminos;
+    vector<vector<int>> matriz = {
+        {-1, 1, 1},
+        {1, 1, 1}
+    };
+
+
+    backtrack(0,0, matriz.size(), matriz[0].size(), matriz, caminos, existeCamino);
+    EXPECT_EQ(existeCamino, false);
+}
+
+TEST(CambiandoseDeAula, test2) {
+    bool existeCamino = false;
+    vector<int> caminos;
+    vector<vector<int>> matriz = {
+        {1, 1, 1},
+        {1, 1, 1}
+    };
+
+
+    backtrack(0,0, matriz.size(), matriz[0].size(), matriz, caminos, existeCamino);
+    EXPECT_EQ(existeCamino, false);
+}
+
+TEST(CambiandoseDeAula, test3) {
+    bool existeCamino = false;
+    vector<int> caminos;
+    vector<vector<int>> matriz = {
+        {1, -1, 1, -1},
+    };
+
+
+    backtrack(0,0, matriz.size(), matriz[0].size(), matriz, caminos, existeCamino);
+    EXPECT_EQ(existeCamino, true);
+}
