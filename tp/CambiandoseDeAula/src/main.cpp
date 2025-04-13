@@ -20,41 +20,69 @@ long long cant_movimientos_min(const vector<vector<int>>& matriz) {
     return (matriz.size() - 1) + ( matriz[0].size() - 1);
 }
 
-void backtrack(int i, int j, const int n, const int m, const vector<vector<int>>& matriz, vector<int> caminos, bool& existeCamino) {
-    //cout<< i << j << endl;
+bool poda(int acumulador, int pasosRestantes) {
+    return abs(acumulador) > pasosRestantes;
+}
+
+void backtrack(int i, int j, const int n, const int m, const vector<vector<int>>& matriz,
+   int acumulador, bool& existeCamino) {
+    if (existeCamino) return;
+    acumulador += matriz[i][j];
+    cout << "(" << i << j << ")" << endl;
     if (i == n - 1 && j == m - 1){
-        int contador = 0;
-        for (int k = 0; k < caminos.size(); k++) {
-            contador += caminos[k];
-        }
-        if (contador == 0) {
+        if (acumulador == 0) {
             existeCamino = true;
-            return;
         }
         return;
     }
-    if (i < n - 1) {
-        caminos.push_back(matriz[i][j]);
-        backtrack(i + 1, j, n, m, matriz, caminos, existeCamino);
+    int pasosRestantes = (n - 1 - i) + (m - 1 - j);
+    if (i < n - 1 && !poda(acumulador, pasosRestantes)) {
+        backtrack(i + 1, j, n, m, matriz, acumulador, existeCamino);
+
     }
-    if (j < m - 1) {
-        caminos.push_back(matriz[i][j]);
-        backtrack(i, j + 1, n, m, matriz, caminos, existeCamino);
+    if (j < m - 1 && !poda(acumulador, pasosRestantes)) {
+        backtrack(i, j + 1, n, m, matriz, acumulador, existeCamino);
+
     }
 }
 
 #ifndef LOCAL
 int main() {
-    bool existeCamino = false;
-    vector<int> caminos;
-    vector<vector<int>> matriz = {
-        {-1, 1, -1, 1},
-        {-1, -1, -1, -1},
-        {1, 1, -1, -1}
-    };
+    int test;
+    int filas, columnas;
+    int casos = 0;
+    vector<string> res;
+    cin >> test;
+    while (casos < test) {
+        int i = 0;
+        cin >> filas >> columnas;
+        vector<vector<int>> input(filas, vector<int>(columnas));
+        while (i < filas) {
+            for (int j = 0; j < columnas; j++) {
+                cin >> input[i][j];
+            }
+            i++;
+        }
+        if ((cant_movimientos_min(input) + 1) % 2 != 0) {
+            res.push_back("NO");
+            casos++;
+        } else {
+            bool existeCamino = false;
+            int acumulador = 0;
+            backtrack(0, 0, filas, columnas, input, acumulador, existeCamino);
+            if (existeCamino) {
+                res.push_back("YES");
+            } else {
+                res.push_back("NO");
+            }
+            casos++;
+        }
+    }
 
-    backtrack(0,0, matriz.size(), matriz[0].size(), matriz, caminos, existeCamino);
-    cout << existeCamino << endl;
+    for (string r : res) {
+        cout << r << endl;
+    }
+
 
     return 0;
 }
