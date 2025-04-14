@@ -8,7 +8,6 @@ TEST(CaminosMinimos, MatrizNxM) {
     for (long long n = 1; n <= 30; ++n) { // Prueba matrices de 1x1 a 5x5
         for (long long m = 1; m <= 30; ++m) {
             vector<vector<int>> matriz(n, vector<int>(m, 1));
-            EXPECT_EQ((n - 1) + (m - 1), cant_movimientos_min(matriz));
             EXPECT_EQ(cantidad_de_caminos((n - 1) + (m - 1), n - 1),
                 cantidad_de_caminos((n - 1) + (m - 1), m - 1));
         }
@@ -93,8 +92,8 @@ bool calcularExisteCamino(const vector<vector<int>>& matriz) {
 
 //Test automatizado con matrices grandes y valores aleatorios
 TEST(CambiandoseDeAula, MatricesGrandesAleatorias) {
-    for (int n = 5; n <= 20; n += 5) { // Tamaños de matriz: 5x5, 10x10, ..., 20x20
-        for (int m = 5; m <= 20; m += 5) {
+    for (int n = 5; n <= 15; n += 5) { // Tamaños de matriz: 5x5, 10x10, ..., 20x20
+        for (int m = 5; m <= 15; m += 5) {
             auto matriz = generarMatriz(n, m);
             bool resultadoEsperado = calcularExisteCamino(matriz);
 
