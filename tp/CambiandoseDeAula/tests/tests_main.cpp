@@ -50,10 +50,7 @@ TEST(CambiandoseDeAula, ExisteCamino) {
     vector<bool> resultados = {false, true, true, true, true, false};
 
     for (int i = 0; i < matrices.size(); ++i) {
-        bool existeCamino = false;
-        int acumulador = 0;
-        backtrack(0,0, matrices[i].size(), matrices[i][0].size(), matrices[i], acumulador, existeCamino);
-        EXPECT_EQ(existeCamino, resultados[i]);
+        EXPECT_EQ(existe_camino(matrices[i]), resultados[i]);
     }
 
 }
@@ -94,18 +91,14 @@ bool calcularExisteCamino(const vector<vector<int>>& matriz) {
     return dfs(0, 0, 0);
 }
 
-// Test automatizado con matrices grandes y valores aleatorios
+//Test automatizado con matrices grandes y valores aleatorios
 TEST(CambiandoseDeAula, MatricesGrandesAleatorias) {
-    for (int n = 5; n <= 15; n += 5) { // Tamaños de matriz: 5x5, 10x10, ..., 20x20
-        for (int m = 5; m <= 15; m += 5) {
+    for (int n = 5; n <= 20; n += 5) { // Tamaños de matriz: 5x5, 10x10, ..., 20x20
+        for (int m = 5; m <= 20; m += 5) {
             auto matriz = generarMatriz(n, m);
             bool resultadoEsperado = calcularExisteCamino(matriz);
 
-            bool existeCamino = false;
-            int acumulador = 0;
-            backtrack(0, 0, n, m, matriz, acumulador, existeCamino);
-
-            EXPECT_EQ(existeCamino, resultadoEsperado);
+            EXPECT_EQ(existe_camino(matriz), resultadoEsperado);
         }
     }
 }

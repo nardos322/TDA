@@ -2,6 +2,7 @@
 #include <vector>
 using namespace std;
 
+constexpr int OFFSET = 2005;
 
 long long factorial(int n) {
     vector<long long> dp(n + 1);
@@ -20,68 +21,63 @@ long long cant_movimientos_min(const vector<vector<int>>& matriz) {
     return (matriz.size() - 1) + ( matriz[0].size() - 1);
 }
 
-bool poda(int acumulador, int pasosRestantes) {
-    return abs(acumulador) > pasosRestantes;
-}
 
-void backtrack(int i, int j, const int n, const int m, const vector<vector<int>>& matriz,
-   int acumulador, bool& existeCamino) {
-    if (existeCamino) return;
+bool backtrack(int i, int j, int acumulador, const int n, const int m,
+    const vector<vector<int>>& matriz, vector<vector<vector<int>>>& memo) {
+
+    if (i >= n || j >= m) return false;
     acumulador += matriz[i][j];
-    cout << "(" << i << j << ")" << endl;
-    if (i == n - 1 && j == m - 1){
-        if (acumulador == 0) {
-            existeCamino = true;
-        }
-        return;
-    }
-    int pasosRestantes = (n - 1 - i) + (m - 1 - j);
-    if (i < n - 1 && !poda(acumulador, pasosRestantes)) {
-        backtrack(i + 1, j, n, m, matriz, acumulador, existeCamino);
+    if (abs(acumulador) > (n - 1 - i) + (m - 1 - j) || (abs(acumulador) % 2) != ((n - 1 - i) + (m - 1 - j)) % 2) return false;
 
+    if (i == n - 1 && j == m - 1) {
+        return acumulador == 0;
     }
-    if (j < m - 1 && !poda(acumulador, pasosRestantes)) {
-        backtrack(i, j + 1, n, m, matriz, acumulador, existeCamino);
 
-    }
+    const int key = acumulador + OFFSET;
+    if (memo[i][j][key] != -1) return memo[i][j][key];
+
+    const bool res = backtrack(i + 1, j, acumulador, n, m, matriz, memo) ||
+                     backtrack(i, j + 1, acumulador, n, m, matriz, memo);
+    memo[i][j][key] = res;
+
+    return res;
 }
+
+bool existe_camino(const vector<vector<int>>& matriz) {
+    const int n = matriz.size();
+    const int m = matriz[0].size();
+
+    if ((n + m - 1) % 2 != 0) return false;
+    vector<vector<vector<int>>> memo(n, vector<vector<int>>(m, vector<int>(2 * OFFSET + 1, -1)));
+    return backtrack(0, 0, 0, n, m, matriz, memo);
+
+}
+
+
 
 #ifndef LOCAL
 int main() {
     int test;
-    int filas, columnas;
-    int casos = 0;
-    vector<string> res;
+
     cin >> test;
-    while (casos < test) {
-        int i = 0;
+    while (test--) {
+        int filas, columnas;
         cin >> filas >> columnas;
         vector<vector<int>> input(filas, vector<int>(columnas));
-        while (i < filas) {
+        for (int i = 0; i < filas; ++i) {
             for (int j = 0; j < columnas; j++) {
                 cin >> input[i][j];
             }
-            i++;
         }
-        if ((cant_movimientos_min(input) + 1) % 2 != 0) {
-            res.push_back("NO");
-            casos++;
+
+        if (existe_camino(input)) {
+            cout << "YES" << endl;
         } else {
-            bool existeCamino = false;
-            int acumulador = 0;
-            backtrack(0, 0, filas, columnas, input, acumulador, existeCamino);
-            if (existeCamino) {
-                res.push_back("YES");
-            } else {
-                res.push_back("NO");
-            }
-            casos++;
+            cout << "NO" << endl;
         }
+
     }
 
-    for (string r : res) {
-        cout << r << endl;
-    }
 
 
     return 0;
