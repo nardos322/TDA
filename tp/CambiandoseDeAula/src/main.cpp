@@ -124,12 +124,8 @@ int main() {
             }
         }
 
-        if (existe_camino(input)) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
-
+        string res = existe_camino(input) ? "YES" : "NO";
+        cout << res << endl;
     }
 
 
