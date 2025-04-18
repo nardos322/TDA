@@ -1,9 +1,10 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-// subset_sub es otra version de backtracking un poco mas clara pero las 2 funciones
-//a continuacion son tecnicas de backtracking que hacen lo mismo
-
+/**
+* subset_sub es otra version de backtracking un poco mas clara pero las 2 funciones
+* a continuacion son tecnicas de backtracking que hacen lo mismo
+*/
 
 
 
