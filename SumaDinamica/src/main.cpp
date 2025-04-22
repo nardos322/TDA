@@ -1,10 +1,6 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-/**
-* subset_sub es otra version de backtracking un poco mas clara pero las 2 funciones
-* a continuacion son tecnicas de backtracking que hacen lo mismo
-*/
 
 
 
@@ -37,7 +33,7 @@ using namespace std;
  * La función combina los resultados de ambas ramas (incluir o excluir el elemento actual) utilizando
  * el operador lógico OR. Los resultados se almacenan en la matriz `memo` para evitar cálculos redundantes.
  */
-bool subset_sum(const vector<int>& set, vector<int>& parcial, vector<vector<int>>& memo, int i, int j) {
+bool subset_sum_topDown(const vector<int>& set, vector<int>& parcial, vector<vector<int>>& memo, int i, int j) {
     if (j < 0) return false;   // si me pase de la suma, no sirve
     if (i == 0) {
         if (j == 0) {   // solucion encontrada!
@@ -54,16 +50,88 @@ bool subset_sum(const vector<int>& set, vector<int>& parcial, vector<vector<int>
         bool incluir = false;
         if (j - set[i - 1] >= 0) {   // solo si no me paso del valor objetivo
             parcial.push_back(set[i - 1]);    // <- lo agrego
-            incluir = subset_sum(set, parcial, memo, i - 1, j - set[i - 1]);
+            incluir = subset_sum_topDown(set, parcial, memo, i - 1, j - set[i - 1]);
+            if (incluir) return true;        // si ya encontre una solucion, no sigo buscando
             parcial.pop_back();               // <- lo quito al volver
         }
 
-        bool no_incluir = subset_sum(set, parcial, memo, i - 1, j);
+        bool no_incluir = subset_sum_topDown(set, parcial, memo, i - 1, j);
+        if (no_incluir) return true;     // si ya encontre una solucion, no sigo buscando
         memo[i][j] = incluir || no_incluir;
     }
     return memo[i][j];
 }
 
+
+/**
+ * @brief Determina si existe un subconjunto de un conjunto dado cuya suma sea igual a un valor objetivo utilizando un enfoque iterativo.
+ *
+ * @param set Conjunto de números enteros.
+ * @param k Valor objetivo que se desea alcanzar con la suma de los elementos del subconjunto.
+ * @return true Si existe al menos un subconjunto cuya suma es igual a `k`.
+ * @return false Si no existe ningún subconjunto que cumpla con la condición.
+ *
+ * @details
+ * La función utiliza programación dinámica para construir una tabla `dp` donde `dp[i][j]` indica si es posible
+ * obtener una suma `j` utilizando los primeros `i` elementos del conjunto `set`. Se llena la tabla iterativamente
+ * considerando dos opciones para cada elemento:
+ * - Incluir el elemento actual en el subconjunto si no excede la suma objetivo.
+ * - No incluir el elemento actual en el subconjunto.
+ *
+ * Una vez completada la tabla, si `dp[n][k]` es `true`, se reconstruye el subconjunto que cumple con la condición
+ * y se imprime. Si no es posible formar la suma `k`, la función retorna `false`.
+ *
+ * Casos base:
+ * - Es posible obtener una suma de 0 con 0 elementos (`dp[0][0] = true`).
+ *
+ * Complejidad:
+ * - Tiempo: O(n * k), donde `n` es el tamaño del conjunto y `k` es el valor objetivo.
+ * - Espacio: O(n * k) debido a la tabla `dp`.
+ */
+
+bool subset_sum_bottomUp(const vector<int>& set, int k) {
+    int n = set.size();
+    // dp[i][j] indica si es posible obtener una suma `j` utilizando los primeros `i` elementos del conjunto.
+    vector<vector<bool>> dp(set.size() + 1, vector<bool>(k + 1, false));
+
+    // Caso base: Es posible obtener una suma de 0 con 0 elementos.
+    dp[0][0] = true;
+
+    // Llenado de la tabla dp
+    for (int i = 1; i <= n; i++) { // Iteramos sobre los elementos del conjunto
+        for (int j = 0; j <= k; j++) { // Iteramos sobre las posibles sumas desde 0 hasta k
+            // Opción 1: Usar el elemento actual si no excede la suma objetivo
+            bool incluir = (j >= set[i - 1]) && dp[i - 1][j - set[i - 1]];
+            // Opción 2: No usar el elemento actual
+            bool no_incluir = dp[i - 1][j];
+            // Actualizamos dp[i][j] considerando ambas opciones
+            dp[i][j] = incluir || no_incluir;
+        }
+    }
+
+    // Si es posible formar la suma `k`, reconstruimos el subconjunto
+    if (dp[n][k]) {
+        int j = k;
+        vector<int> parcial;
+        // Reconstrucción del subconjunto a partir de la tabla dp
+        for (int i = n; i > 0 && j > 0; i--) {
+            // Si el elemento actual fue usado en la solución
+            if (dp[i][j] && !dp[i - 1][j]) {
+                parcial.push_back(set[i - 1]); // Añadimos el elemento al subconjunto
+                j -= set[i - 1]; // Reducimos la suma objetivo
+            }
+        }
+
+        // Imprimimos el subconjunto encontrado
+        for (int i = 0; i < parcial.size(); i++) {
+            cout << parcial[i] << " ";
+        }
+        return true;
+    }
+
+    // Si no es posible formar la suma `k`, retornamos false
+    return false;
+}
 
 
 /**
@@ -118,19 +186,14 @@ void subset_sum_k(const vector<int>& set, int k) {
 
 
 int main() {
-    const vector<int> set = {1, 2, 3};
-    int j = 6;
+    const vector<int> set = {3,1,2,5,5};
+    int j = 13;
     vector<int> parcial;
     vector<vector<int>> memo(set.size() + 1, vector<int>(j + 1, -1));
-    // subset_sum_k(set, 3);
-    subset_sum(set, parcial, memo, set.size(), j);
+    // subset_sum_k(set, j);
+    // subset_sum_topDown(set, parcial, memo, set.size(), j);
+    subset_sum_bottomUp(set, j);
 
-    for (int i = 0; i < memo.size(); i++) {
-        for (int k = 0; k < memo[0].size(); k++) {
-            cout << memo[i][k] << " ";
-        }
-        cout << endl;
-    }
 
 
     return 0;
