@@ -3,7 +3,6 @@
 using namespace std;
 
 
-
 /**
  * @brief Determina si existe un subconjunto de un conjunto dado cuya suma sea igual a un valor objetivo.
  *
@@ -16,23 +15,30 @@ using namespace std;
  * @return false Si no existe ningún subconjunto que cumpla con la condición.
  *
  * @details
- * La función utiliza un enfoque de programación dinámica con memoización para optimizar la búsqueda
- * de subconjuntos cuya suma sea igual a un valor objetivo. Explora recursivamente todas las combinaciones
- * posibles de elementos en el conjunto `set`. Si se encuentra un subconjunto cuya suma es igual a `j`,
- * imprime los elementos del subconjunto y retorna `true`. Si no, continúa explorando otras combinaciones.
+ * La función utiliza un enfoque de programación dinámica con memoización (top-down) para optimizar 
+ * la búsqueda de subconjuntos cuya suma sea igual a un valor objetivo. Explora recursivamente todas 
+ * las combinaciones posibles de elementos en el conjunto `set`.
  *
  * Casos base:
- * - Si `j` es menor que 0, retorna `false` porque no es posible alcanzar un valor objetivo negativo.
- * - Si `i` es 0 y `j` es 0, imprime el subconjunto actual almacenado en `parcial` y retorna `true`.
- * - Si `i` es 0 y `j` no es 0, retorna `false`.
+ * - Si `j < 0`: retorna `false` (suma excede el objetivo)
+ * - Si `i == 0` y `j == 0`: encontró solución, imprime el subconjunto y retorna `true`
+ * - Si `i == 0` y `j != 0`: retorna `false` (no hay solución)
  *
- * Llamadas recursivas:
- * - Incluye el elemento actual (`set[i-1]`) en el subconjunto si no excede el valor objetivo `j`.
- * - Excluye el elemento actual y continúa evaluando el resto del conjunto.
+ * Proceso recursivo:
+ * 1. Verifica si el subproblema ya fue resuelto en la matriz memo
+ * 2. Para cada elemento, evalúa dos posibilidades:
+ *    - Incluir el elemento actual si no excede el valor objetivo
+ *    - No incluir el elemento y continuar con el resto
+ * 3. Almacena el resultado en la matriz de memoización
  *
- * La función combina los resultados de ambas ramas (incluir o excluir el elemento actual) utilizando
- * el operador lógico OR. Los resultados se almacenan en la matriz `memo` para evitar cálculos redundantes.
+ * Complejidad:
+ * - Temporal: O(n * k), donde n es el tamaño del conjunto y k es la suma objetivo
+ * - Espacial: O(n * k) para la matriz de memoización
+ *
+ * @note La función imprime la primera solución válida que encuentra y termina la búsqueda.
+ * @note Utiliza backtracking para mantener el vector parcial actualizado durante la búsqueda.
  */
+
 bool subset_sum_topDown(const vector<int>& set, vector<int>& parcial, vector<vector<int>>& memo, int i, int j) {
     if (j < 0) return false;   // si me pase de la suma, no sirve
     if (i == 0) {
@@ -174,19 +180,9 @@ bool backtrack(const int k, int i, int suma, const vector<int>& set, vector<int>
     return res;
 }
 
-/**
- *
- * @param set Conjunto de numeros enteros
- * @param k Valor objetivo que tiene que alcancar la suma de los elementos del subconjunto
- */
-void subset_sum_k(const vector<int>& set, int k) {
-    vector<int> sub_set;
-    backtrack(k, 0, 0, set, sub_set);
-}
-
 
 int main() {
-    const vector<int> set = {3,1,2,5,5};
+    const vector<int> set = {3, 1, 2, 5, 5};
     int j = 13;
     vector<int> parcial;
     vector<vector<int>> memo(set.size() + 1, vector<int>(j + 1, -1));
