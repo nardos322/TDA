@@ -3,4 +3,5 @@ project(jam)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(jam main.cpp)
+add_executable(jam main.cpp
+        dfs.cpp)

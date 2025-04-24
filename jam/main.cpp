@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "dfs.cpp"
 using namespace std;
 
 
@@ -40,62 +41,62 @@ vector<vector<int>> permutaciones(const vector<int>& conjunto) {
 
 }
 
-struct Vertice {
-    bool visitado;
-    int descubrimiento;
-    int finalizacion;
-    int predecesor;
-};
+// struct Vertice {
+//     bool visitado;
+//     int descubrimiento;
+//     int finalizacion;
+//     int predecesor;
+// };
 
-void dfs_visitar(const vector<vector<int>>& grafo, vector<Vertice>& vertices,
-                 int u, int& tiempo) {
-    tiempo = tiempo + 1;
-    vertices[u].descubrimiento = tiempo;
-    vertices[u].visitado = true;
+// void dfs_visitar(const vector<vector<int>>& grafo, vector<Vertice>& vertices,
+//                  int u, int& tiempo) {
+//     tiempo = tiempo + 1;
+//     vertices[u].descubrimiento = tiempo;
+//     vertices[u].visitado = true;
+//
+//     cout << "Descubriendo vertice " << u
+//          << " en tiempo " << tiempo << endl;
+//
+//     // Explora todos los vertices
+//     for (int vecino = 0; vecino < grafo.size(); vecino++) {
+//         if (grafo[u][vecino] == 1 && !vertices[vecino].visitado) {
+//             vertices[vecino].predecesor = u;  // Guardamos el predecesor
+//             dfs_visitar(grafo, vertices, vecino, tiempo);
+//         }
+//     }
+//
+//     tiempo = tiempo + 1;
+//     vertices[u].finalizacion = tiempo;
+//     cout << "Finalizando vertice " << u
+//          << " en tiempo " << tiempo << endl;
+// }
 
-    cout << "Descubriendo vertice " << u
-         << " en tiempo " << tiempo << endl;
-
-    // Explora todos los vertices
-    for (int vecino = 0; vecino < grafo.size(); vecino++) {
-        if (grafo[u][vecino] == 1 && !vertices[vecino].visitado) {
-            vertices[vecino].predecesor = u;  // Guardamos el predecesor
-            dfs_visitar(grafo, vertices, vecino, tiempo);
-        }
-    }
-
-    tiempo = tiempo + 1;
-    vertices[u].finalizacion = tiempo;
-    cout << "Finalizando vertice " << u
-         << " en tiempo " << tiempo << endl;
-}
-
-void dfs(const vector<vector<int>>& grafo) {
-    const int n = grafo.size();
-    vector<Vertice> vertices(n);
-
-    // Inicialización
-    for (int u = 0; u < n; u++) {
-        vertices[u].visitado = false;
-        vertices[u].predecesor = -1;  // -1 indica que no tiene predecesor
-    }
-
-    int tiempo = 0;
-
-    // Para cada vértice
-    for (int u = 0; u < n; u++) {
-        if (!vertices[u].visitado) {
-            dfs_visitar(grafo, vertices, u, tiempo);
-        }
-    }
-
-    // Podemos imprimir el árbol DFS usando los predecesores
-    cout << "\nÁrbol DFS (vértice: predecesor):\n";
-    for (int i = 0; i < n; i++) {
-        cout << "Vertice " << i << ": predecesor = "
-             << vertices[i].predecesor << endl;
-    }
-}
+// void dfs(const vector<vector<int>>& grafo) {
+//     const int n = grafo.size();
+//     vector<Vertice> vertices(n);
+//
+//     // Inicialización
+//     for (int u = 0; u < n; u++) {
+//         vertices[u].visitado = false;
+//         vertices[u].predecesor = -1;  // -1 indica que no tiene predecesor
+//     }
+//
+//     int tiempo = 0;
+//
+//     // Para cada vértice
+//     for (int u = 0; u < n; u++) {
+//         if (!vertices[u].visitado) {
+//             dfs_visitar(grafo, vertices, u, tiempo);
+//         }
+//     }
+//
+//     // Podemos imprimir el árbol DFS usando los predecesores
+//     cout << "\nÁrbol DFS (vértice: predecesor):\n";
+//     for (int i = 0; i < n; i++) {
+//         cout << "Vertice " << i << ": predecesor = "
+//              << vertices[i].predecesor << endl;
+//     }
+// }
 
 
 int main() {
@@ -113,23 +114,22 @@ int main() {
         {0, 0, 0, 1, 0, 0},
         {0, 0, 0, 0, 0, 1}
     };
-    vector<bool> visitado(grafo2.size(), false);
-    //dfs(grafo2, visitado, 0);
 
-    dfs(grafo2);
+    DFS dfs(grafo2);
 
+    dfs.ejecutar();
 
+    if (dfs.hay_ciclo()) {
+        cout << "El grafo tiene un ciclo." << endl;
+    } else {
+        cout << "Orden topologico:" << endl;
+        for (const int v : dfs.obtener_orden_topologico()) {
+            cout << v << " ";
+        }
+        cout << endl;
+    }
 
+    dfs.imprimir_arbol_dfs();
 
-
-    // const vector<int> conjunto = {1, 2, 3};
-    // const vector<vector<int>> res = permutaciones(conjunto);
-    //
-    // for (int i = 0; i < res.size(); i++) {
-    //     for (int j = 0; j < res[i].size(); j++) {
-    //         cout << res[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
     return 0;
 }
