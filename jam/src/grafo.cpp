@@ -3,8 +3,7 @@
 using namespace std;
 
 
-Grafo::Grafo(int num_vertices): lista_adyacencia(num_vertices) {
-};
+Grafo::Grafo(int num_vertices): lista_adyacencia(num_vertices) {}
 
 void Grafo::agregar_arista(int origen, int destino) {
     lista_adyacencia[origen].push_back(destino);
