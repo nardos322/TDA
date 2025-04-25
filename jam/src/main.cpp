@@ -8,8 +8,8 @@ using namespace std;
 void dfs_basic(const vector<vector<int>>& grafo, vector<bool>& visitado, int vertice) {
     visitado[vertice] = true;
     cout << "visitando vertice: " << vertice << endl;
-    for (int vecino = 0; vecino < grafo.size(); vecino++) {
-        if (grafo[vertice][vecino] == 1 && !visitado[vecino]) {
+    for (const int vecino : grafo[vertice]) {
+        if (!visitado[vecino]) {
             dfs_basic(grafo, visitado, vecino);
         }
     }

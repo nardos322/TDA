@@ -2,8 +2,6 @@
 #define DFS_H
 #include <vector>
 #include <list>
-#include <iostream>
-#include <string>
 #include "grafo.h"
 
 
@@ -36,14 +34,20 @@ private:
     std::vector<Vertice> vertices;
     std::list<int> orden_topologico;
     std::vector<std::pair<int,int>> aristas_clasificadas;
+    std::vector<std::vector<int>> componentes_fuertemente_conexas;
+    std::vector<int> componente_actual;
     int tiempo;
     bool tiene_ciclo;
     void clasificar_arista(int u, int v, TipoArista tipo);
     void dfs_visitar(int u);
+    void dfs_visitar_scc(int u);
+    std::vector<int> obtener_vertices_por_finalizacion() const;
 
 public:
     explicit DFS(const Grafo& g);
     void ejecutar();
+    void encontrar_componentes_fuertemente_conexas();
+    std::vector<std::vector<int>> obtener_componentes() const;
     bool hay_ciclo() const;
     std::list<int> obtener_orden_topologico() const;
     std::vector<std::pair<int,int>> obtener_aristas_clasificadas() const;
