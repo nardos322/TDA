@@ -11,6 +11,7 @@ public:
     void agregar_arista(int origen, int destino);
     const std::vector<std::vector<int>>& obtener_lista_adyacencia() const;
     int obtener_num_vertices() const;
+    Grafo obtener_transpuesto() const;
 };
 
 

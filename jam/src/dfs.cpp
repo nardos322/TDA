@@ -2,10 +2,12 @@
 #include <string>
 #include "../include/dfs.h"
 
+#include <algorithm>
+
 using namespace std;
 
 
-void DFS::clasificar_arista(int u, int v, TipoArista tipo) {
+void DFS::clasificar_arista(int u, int v, const TipoArista tipo) {
     aristas_clasificadas.push_back({u, v});
     string tipo_str;
     switch (tipo) {
@@ -22,7 +24,7 @@ void DFS::clasificar_arista(int u, int v, TipoArista tipo) {
     cout << "Arista (" << u << ", " << v << ") es de tipo " << tipo_str << endl;
 }
 
-void DFS::dfs_visitar(int u) {
+void DFS::dfs_visitar(const int u) {
     tiempo++;
     vertices[u].descubrimiento = tiempo;
     vertices[u].color = Color::GREY;
@@ -50,6 +52,48 @@ void DFS::dfs_visitar(int u) {
     if (!tiene_ciclo) {
         orden_topologico.push_front(u);
     }
+
+}
+
+void DFS::dfs_visitar_scc(const int u) {
+    tiempo++;
+    vertices[u].descubrimiento = tiempo;
+    vertices[u].color = Color::GREY;
+    componente_actual.push_back(u);  // Agregar vertice a la componente actual
+    for (const int v : grafo.obtener_lista_adyacencia()[u]) {
+        if (vertices[v].color == Color::WHITE) {
+            vertices[v].predecesor = u;
+            dfs_visitar_scc(v);
+        }
+    }
+    vertices[u].color = Color::BLACK;
+    tiempo++;
+    vertices[u].finalizacion = tiempo;
+
+
+}
+
+std::vector<int> DFS::obtener_vertices_por_finalizacion() const {
+    // Crear un vector de pares (tiempo de finalizacion, indice del vertice)
+    std::vector<std::pair<int,int>> vertices_tiempo;
+    vertices_tiempo.reserve(vertices.size());
+    for (int i = 0; i < vertices.size(); i++) {
+        vertices_tiempo.push_back({vertices[i].finalizacion, i});
+    }
+
+    // Ordenar por tiempo de finalizacion (descendente)
+    ranges::sort(vertices_tiempo,
+                 [](const auto& a, const auto& b ) {
+                     return a.first > b.first;
+                 });
+
+    // Extraer solo los indices de vertices
+    std::vector<int> result;
+    result.reserve(vertices_tiempo.size());
+    for (const auto& par : vertices_tiempo) {
+        result.push_back(par.second);
+    }
+    return result;
 }
 
 
@@ -74,6 +118,40 @@ void DFS::ejecutar() {
             dfs_visitar(u);
         }
     }
+}
+
+void DFS::encontrar_componentes_fuertemente_conexas() {
+    // Paso 1: aplicamos DFS en el grafo original
+    ejecutar();
+    // Paso 2: Obtener vertices ordenados por tiempo de finalizacion
+    const vector<int> orden = obtener_vertices_por_finalizacion();
+
+    // Paso 3: Creamos el grafo transpuesto
+    Grafo grafo_transpuesto = grafo.obtener_transpuesto();
+
+    // Paso 4: Reiniciamos el estado de los vertices
+    for (auto& v : vertices) {
+        v.color = Color::WHITE;
+        v.predecesor = SIN_PREDECESOR;
+    }
+
+    // Paso 5: Limpiar componentes anteriores
+    componentes_fuertemente_conexas.clear();
+    tiempo = 0;
+
+    // Paso 6: Segunda pasada DFS en orden descendente de finalización
+    for (const int v : orden) {
+        if (vertices[v].color == Color::WHITE) {
+            componente_actual.clear();
+            dfs_visitar_scc(v);
+            componentes_fuertemente_conexas.push_back(componente_actual);
+
+        }
+    }
+}
+
+std::vector<std::vector<int>> DFS::obtener_componentes() const {
+    return componentes_fuertemente_conexas;
 }
 
 bool DFS::hay_ciclo() const { return tiene_ciclo; }
