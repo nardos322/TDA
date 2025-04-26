@@ -29,7 +29,7 @@ void DFS::dfs_visitar(const int u) {
     vertices[u].descubrimiento = tiempo;
     vertices[u].color = Color::GREY;
 
-    for (const int v: grafo.obtener_lista_adyacencia()[u]) {
+    for (const int v: grafo.obtener_adyacentes(u)) {
         // solo recorremos los vecinos existentes
         if (vertices[v].color == Color::WHITE) {
             vertices[v].predecesor = u;
@@ -60,7 +60,7 @@ void DFS::dfs_visitar_scc(const int u) {
     vertices[u].descubrimiento = tiempo;
     vertices[u].color = Color::GREY;
     componente_actual.push_back(u);  // Agregar vertice a la componente actual
-    for (const int v : grafo.obtener_lista_adyacencia()[u]) {
+    for (const int v : grafo.obtener_adyacentes(u)) {
         if (vertices[v].color == Color::WHITE) {
             vertices[v].predecesor = u;
             dfs_visitar_scc(v);
