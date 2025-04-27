@@ -8,7 +8,7 @@
 
 class DFS {
 private:
-    const Grafo& grafo;
+    const IGrafo& grafo;
     std::vector<Vertice> vertices;
     std::list<int> orden_topologico;
     std::vector<std::pair<int,int>> aristas_clasificadas;
@@ -22,7 +22,7 @@ private:
     [[nodiscard]] std::vector<int> obtener_vertices_por_finalizacion() const;
 
 public:
-    explicit DFS(const Grafo& g);
+    explicit DFS(const IGrafo& g);
     void ejecutar();
     void encontrar_componentes_fuertemente_conexas();
     [[nodiscard]] std::vector<std::vector<int>> obtener_componentes() const;

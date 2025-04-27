@@ -1,7 +1,10 @@
 #ifndef TYPES_H
 #define TYPES_H
+#include <limits>
 
 constexpr int SIN_PREDECESOR = -1;
+constexpr double INFINITO = std::numeric_limits<double>::infinity();
+
 
 enum class Color {
     WHITE,
@@ -21,6 +24,25 @@ struct Vertice {
     int descubrimiento;
     int finalizacion;
     int predecesor;
+};
+
+struct AristaPonderada {
+    int destino;
+    double peso;
+
+    AristaPonderada(int dest, double p) : destino(dest), peso(p) {}
+
+    bool operator==(const AristaPonderada& other) const {
+        return destino == other.destino;
+    }
+};
+
+struct Arista {
+    int destino;
+    constexpr explicit Arista(int dest) : destino(dest) {}
+    bool operator==(const Arista& other) const {
+        return destino == other.destino;
+    }
 };
 
 

@@ -97,7 +97,7 @@ std::vector<int> DFS::obtener_vertices_por_finalizacion() const {
 }
 
 
-DFS::DFS(const Grafo& g) : grafo(g) {
+DFS::DFS(const IGrafo& g) : grafo(g) {
     vertices.resize(g.obtener_num_vertices());
     tiempo = 0;
     tiene_ciclo = false;
@@ -127,7 +127,7 @@ void DFS::encontrar_componentes_fuertemente_conexas() {
     const vector<int> orden = obtener_vertices_por_finalizacion();
 
     // Paso 3: Creamos el grafo transpuesto
-    Grafo grafo_transpuesto = grafo.obtener_transpuesto();
+    std::unique_ptr<IGrafo> grafo_transpuesto = grafo.obtener_transpuesto();
 
     // Paso 4: Reiniciamos el estado de los vertices
     for (auto& v : vertices) {

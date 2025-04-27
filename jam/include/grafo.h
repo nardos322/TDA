@@ -1,18 +1,22 @@
 #ifndef GRAFO_H
 #define GRAFO_H
 #include <vector>
+#include "igrafo.h"
+#include "types.h"
 
-class Grafo {
+class Grafo final: public IGrafo {
 private:
-    std::vector<std::vector<int>> lista_adyacencia;
+    std::vector<std::vector<Arista>> lista_adyacencia;
 
 public:
     explicit Grafo(int num_vertices);
-    void agregar_arista(int origen, int destino);
-    [[nodiscard]] const std::vector<std::vector<int>>& obtener_lista_adyacencia() const;
-    [[nodiscard]] int obtener_num_vertices() const;
-    const std::vector<int>& obtener_adyacentes(int v) const;
-    [[nodiscard]] Grafo obtener_transpuesto() const;
+    void agregar_arista(int origen, int destino) override;
+    bool existe_arista(int origen, int destino) const override;
+    const std::vector<int> obtener_adyacentes(int vertice) const override;
+    [[nodiscard]] std::vector<std::vector<int>> obtener_lista_adyacencia() const override;
+    [[nodiscard]] size_t obtener_num_vertices() const override;
+    [[nodiscard]] std::unique_ptr<IGrafo> obtener_transpuesto() const override;
+
 };
 
 
