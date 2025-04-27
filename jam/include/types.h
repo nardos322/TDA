@@ -24,13 +24,20 @@ struct Vertice {
     int descubrimiento;
     int finalizacion;
     int predecesor;
+    double distancia;
+
+    Vertice() : color(Color::WHITE),
+                descubrimiento(0),
+                finalizacion(0),
+                predecesor(SIN_PREDECESOR),
+                distancia(INFINITO) {}
 };
 
 struct AristaPonderada {
     int destino;
     double peso;
 
-    AristaPonderada(int dest, double p) : destino(dest), peso(p) {}
+    AristaPonderada(const int dest, const double p) : destino(dest), peso(p) {}
 
     bool operator==(const AristaPonderada& other) const {
         return destino == other.destino;
@@ -39,7 +46,7 @@ struct AristaPonderada {
 
 struct Arista {
     int destino;
-    constexpr explicit Arista(int dest) : destino(dest) {}
+    constexpr explicit Arista(const int dest) : destino(dest) {}
     bool operator==(const Arista& other) const {
         return destino == other.destino;
     }

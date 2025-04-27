@@ -11,10 +11,10 @@ private:
 public:
     explicit Grafo(int num_vertices);
     void agregar_arista(int origen, int destino) override;
-    bool existe_arista(int origen, int destino) const override;
-    const std::vector<int> obtener_adyacentes(int vertice) const override;
-    [[nodiscard]] std::vector<std::vector<int>> obtener_lista_adyacencia() const override;
+    [[nodiscard]] bool existe_arista(int origen, int destino) const override;
+    [[nodiscard]] const std::vector<int> obtener_adyacentes(int vertice) const override;
     [[nodiscard]] size_t obtener_num_vertices() const override;
+    [[nodiscard]] std::vector<std::vector<int>> obtener_lista_adyacencia() const override;
     [[nodiscard]] std::unique_ptr<IGrafo> obtener_transpuesto() const override;
 
 };

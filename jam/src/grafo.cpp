@@ -14,23 +14,15 @@ Grafo::Grafo(const int num_vertices) {
 }
 
 void Grafo::agregar_arista(const int origen, const int destino) {
-    if (origen < 0 || origen >= obtener_num_vertices() ||
-        destino < 0 || destino >= obtener_num_vertices()) {
-        throw out_of_range("Vertice fuera de rango");
-    }
+    validar_vertices(origen, destino, obtener_num_vertices());
+
     if (!existe_arista(origen, destino)) {
-        lista_adyacencia[origen].push_back(Arista(destino));
+        lista_adyacencia[origen].emplace_back(destino);
     }
 }
 
 bool Grafo::existe_arista(const int origen, const int destino) const {
-    const auto num_vertices = obtener_num_vertices();
-    if (origen < 0 || origen >= num_vertices) {
-        throw out_of_range("Vértice origen fuera de rango");
-    }
-    if (destino < 0 || destino >= num_vertices) {
-        throw out_of_range("Vértice destino fuera de rango");
-    }
+    validar_vertices(origen, destino, obtener_num_vertices());
 
     return ranges::find(lista_adyacencia[origen].begin(),
                        lista_adyacencia[origen].end(),
@@ -38,16 +30,19 @@ bool Grafo::existe_arista(const int origen, const int destino) const {
 }
 
 
-const vector<int> Grafo::obtener_adyacentes(int vertice) const {
-    if (vertice < 0 || vertice >= obtener_num_vertices()) {
-        throw out_of_range("Vertice fuera de rango");
-    }
+const vector<int> Grafo::obtener_adyacentes(const int vertice) const {
+    validar_vertice(vertice, obtener_num_vertices());
+
     vector<int> adyacentes;
     adyacentes.reserve(lista_adyacencia[vertice].size());
     for (const auto& arista : lista_adyacencia[vertice]) {
         adyacentes.push_back(arista.destino);
     }
     return adyacentes;
+}
+
+size_t Grafo::obtener_num_vertices() const {
+    return lista_adyacencia.size();
 }
 
 vector<vector<int>> Grafo::obtener_lista_adyacencia() const {
@@ -61,16 +56,12 @@ vector<vector<int>> Grafo::obtener_lista_adyacencia() const {
     return res;
 }
 
-size_t Grafo::obtener_num_vertices() const {
-    return lista_adyacencia.size();
-}
-
 std::unique_ptr<IGrafo> Grafo::obtener_transpuesto() const {
     auto transpuesto = std::make_unique<Grafo>(obtener_num_vertices());
 
-    for (size_t v = 0; v < obtener_num_vertices(); v++) {
-        for (const auto& arista : lista_adyacencia[v]) {
-            transpuesto->agregar_arista(arista.destino, v);
+    for (int vertice_origen = 0; vertice_origen < obtener_num_vertices(); vertice_origen++) {
+        for (const auto& arista : lista_adyacencia[vertice_origen]) {
+            transpuesto->agregar_arista(arista.destino, vertice_origen);
         }
     }
 

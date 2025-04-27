@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(${PROJECT_NAME}_lib
         src/dfs.cpp
         src/grafo.cpp
+        src/grafo_ponderado.cpp
 )
 
 target_include_directories(${PROJECT_NAME}_lib PUBLIC
