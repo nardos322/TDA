@@ -4,8 +4,9 @@
 
 class IGrafoPonderado : public IGrafo {
 public:
-    virtual int obtener_peso(int origen, int destino) const = 0;
+    virtual double obtener_peso(int origen, int destino) const = 0;
     using IGrafo::agregar_arista;
     virtual void agregar_arista(int origen, int destino, double peso) = 0;
+
 };
 #endif //IGRAFO_PONDERADO_H

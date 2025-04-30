@@ -28,7 +28,8 @@ public:
     [[nodiscard]] virtual const std::vector<int> obtener_adyacentes(int vertice) const = 0;
     [[nodiscard]] virtual std::vector<std::vector<int>> obtener_lista_adyacencia() const = 0;
     [[nodiscard]] virtual std::unique_ptr<IGrafo> obtener_transpuesto() const = 0;
-
+    [[nodiscard]] virtual bool es_grafo_dirigido() const  = 0;
+    [[nodiscard]] virtual bool es_grafo_ponderado() const = 0;
 
 };
 

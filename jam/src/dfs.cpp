@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 #include "../include/dfs.h"
-
 #include <algorithm>
+
+#include "igrafo_ponderado.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ void DFS::ejecutar() {
             dfs_visitar(u);
         }
     }
+
+    cout << "\nDFS completado.\n";
 }
 
 
@@ -55,6 +58,7 @@ void DFS::encontrar_componentes_fuertemente_conexas() {
 
         }
     }
+
 }
 
 std::vector<std::vector<int>> DFS::obtener_componentes() const {
@@ -67,12 +71,70 @@ list<int> DFS::obtener_orden_topologico() const {
     return tiene_ciclo ? list<int>() : orden_topologico;
 }
 
-vector<pair<int, int>> DFS::obtener_aristas_clasificadas() const {
+vector<Arista> DFS::obtener_aristas_clasificadas() const {
     return aristas_clasificadas;
 }
 
+void DFS::imprimir_aristas_clasificadas() const {
+    if (aristas_clasificadas.empty()) {
+        cout <<"\nNo hay aristas clasificadas.\n";
+        cout << "Ejecuta ejecutar() primero.\n";
+        return;
+    }
+    cout <<"\nClasificacion de aristas:\n";
+    for (const auto& arista : aristas_clasificadas) {
+        cout << "Arista (" << arista.origen << ", " << arista.destino
+             << ") es de tipo " << arista.obtener_tipo_str() << endl;
+    }
+}
+
+void DFS::imprimir_orden_topologico() const {
+    const list<int> orden = obtener_orden_topologico();
+    if (orden.empty()) {
+        cout << "No hay orden topológico (el grafo tiene ciclos).\n";
+        return;
+    }
+
+    cout << "\nOrden topológico:\n";
+    bool primero = true;
+    for (const int v : orden) {
+        if (!primero) {
+            cout << "->";
+        }
+        cout << v;
+        primero = false;
+    }
+    cout << endl;
+}
+
+void DFS::imprimir_componentes_fuertemente_conexas() const {
+    if (componentes_fuertemente_conexas.empty()) {
+        cout << "\nNo se han calculado mas componentes fuertemente conexas.\n";
+        cout << "Ejecuta encontrar_componentes_fuertemente_conexas() primero.\n";
+        return;
+    }
+
+    cout << "\nComponentes fuertemente conexas:\n";
+    for (size_t i = 0; i < componentes_fuertemente_conexas.size(); i++) {
+        cout << "Componente " << i + 1 << ": { ";
+        bool primero = true;
+        for (const int v : componentes_fuertemente_conexas[i]) {
+            if (!primero) {
+                cout << ", ";
+            }
+            cout << v;
+            primero = false;
+        }
+        cout << " }\n";
+    }
+    cout << "Total de componentes: " << componentes_fuertemente_conexas.size() << endl;
+}
+
+
+
+
 void DFS::imprimir_tiempos() const {
-    cout << "Tiempos de descubrimiento y finalización:\n";
+    cout << "\nTiempos de descubrimiento y finalización:\n";
     for (int i = 0; i < vertices.size(); i++) {
         cout << "Vertice " << i << ": descubrimiento = "
                 << vertices[i].descubrimiento
@@ -92,20 +154,19 @@ void DFS::imprimir_arbol_dfs() const {
 // Metodos privados
 
 void DFS::clasificar_arista(int u, int v, const TipoArista tipo) {
-    aristas_clasificadas.push_back({u, v});
-    string tipo_str;
-    switch (tipo) {
-        case TipoArista::TREE_EDGE: tipo_str = "tree";
-            break;
-        case TipoArista::BACK_EDGE: tipo_str = "back";
-            break;
-        case TipoArista::FORWARD_EDGE: tipo_str = "forward";
-            break;
-        case TipoArista::CROSS_EDGE: tipo_str = "cross";
-            break;
-    }
+    double peso = 1.0; // valor predeterminado
 
-    cout << "Arista (" << u << ", " << v << ") es de tipo " << tipo_str << endl;
+    // Como grafo es de tipo IGrafo&, necesitamos hacer un dynamic_cast
+    if (const auto* grafo_ponderado = dynamic_cast<const IGrafoPonderado*>(&grafo)) {
+        try {
+            peso = grafo_ponderado->obtener_peso(u, v);
+        } catch (const runtime_error&) {
+            // Si falla al obtener el peso, mantenemos el peso predeterminado
+
+        }
+    }
+    const Arista arista(u, v, peso, tipo);
+    aristas_clasificadas.push_back(arista);
 }
 
 void DFS::dfs_visitar(const int u) {

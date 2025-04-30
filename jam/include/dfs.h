@@ -14,7 +14,10 @@ public:
     [[nodiscard]] std::vector<std::vector<int>> obtener_componentes() const;
     [[nodiscard]] bool hay_ciclo() const;
     [[nodiscard]] std::list<int> obtener_orden_topologico() const;
-    [[nodiscard]] std::vector<std::pair<int,int>> obtener_aristas_clasificadas() const;
+    [[nodiscard]] std::vector<Arista> obtener_aristas_clasificadas() const;
+    void imprimir_aristas_clasificadas() const;
+    void imprimir_orden_topologico() const;
+    void imprimir_componentes_fuertemente_conexas() const;
     void imprimir_tiempos() const;
     void imprimir_arbol_dfs() const;
 
@@ -22,7 +25,7 @@ private:
     const IGrafo& grafo;
     std::vector<Vertice> vertices;
     std::list<int> orden_topologico;
-    std::vector<std::pair<int,int>> aristas_clasificadas;
+    std::vector<Arista> aristas_clasificadas;
     std::vector<std::vector<int>> componentes_fuertemente_conexas;
     std::vector<int> componente_actual;
     int tiempo;

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include "../include/grafo.h"
-#include  "../include/grafo_ponderado.h"
 #include "../include/dfs.h"
 #include "../include/bellmanford.h"
 using namespace std;
@@ -49,94 +48,56 @@ vector<vector<int>> permutaciones(const vector<int>& conjunto) {
 int main() {
 
 
-    GrafoPonderado grafo(8);
-    grafo.agregar_arista(0, 1, 3.0);
-    grafo.agregar_arista(0, 3, 5.0);
-    grafo.agregar_arista(0, 5, 2.0);
-    grafo.agregar_arista(1, 2, -4.0);
-    grafo.agregar_arista(2, 7, 4.0);
-    grafo.agregar_arista(3, 4, 6.0);
-    grafo.agregar_arista(4, 3, -3.0);
-    grafo.agregar_arista(4, 7, 8.0);
-    grafo.agregar_arista(5, 6, 3.0);
-    grafo.agregar_arista(6, 5, -3.0);
-    grafo.agregar_arista(6, 7, 7.0);
+
+    Grafo g(3);
+    g.agregar_arista(0,1);
+    g.agregar_arista(0, 2);
+    g.agregar_arista(1, 2);
 
 
-    BellmanFord bf(grafo);
+    Grafo t(8, true);
+    t.agregar_arista(0, 1, 3.0);
+    t.agregar_arista(0, 3, 5.0);
+    t.agregar_arista(0, 5, 2.0);
+    t.agregar_arista(1, 2, -4.0);
+    t.agregar_arista(2, 7, 4.0);
+    t.agregar_arista(3, 4, 6.0);
+    t.agregar_arista(4, 3, -3.0);
+    t.agregar_arista(4, 7, 8.0);
+    t.agregar_arista(5, 6, 3.0);
+    t.agregar_arista(6, 5, -3.0);
+    t.agregar_arista(6, 7, 7.0);
 
+    Grafo c(4, true);
+    c.agregar_arista(0, 1, 3.0);
+    c.agregar_arista(0, 2, -2.0);
+    c.agregar_arista(2, 3, 4.0);
+    c.agregar_arista(3, 1, -1.0);
 
-    if (bf.encontrar_camino_minimo(0)) {
-        const vector<vector<int>> caminos = bf.obtener_todos_caminos();
-        for (int i = 0; i < caminos.size(); i++) {
-            cout << "Camino " << i + 1 << ": ";
-            for (int j = 0; j < caminos[i].size(); j++) {
-                cout << caminos[i][j] << " ";
-            }
-            cout << endl;
-        }
-    } else {
-        cout << "No hay camino minimo porque hay ciclos" << endl;
-    }
+    Grafo d(5, true);
+    d.agregar_arista(0, 1, 3.0);
+    d.agregar_arista(0, 3, 5.0);
+    d.agregar_arista(1, 2, 6.0);
+    d.agregar_arista(1, 3, 2.0);
+    d.agregar_arista(2, 4, 2.0);
+    d.agregar_arista(3, 1, 1.0);
+    d.agregar_arista(3, 2, 4.0);
+    d.agregar_arista(3, 4, -10.0);
+    d.agregar_arista(4, 0, 3.0);
+    d.agregar_arista(4, 2, 7.0);
 
+    BellmanFord bf(c);
 
+    bf.encontrar_camino_minimo(0);
+    const vector<vector<int>> caminos = bf.obtener_todos_caminos();
+    bf.imprimir_todos_caminos();
+    bf.imprimir_tabla_distancias();
 
-
-
-
-
-
-
-
-
-
-
-    // Grafo g(3);
-    // g.agregar_arista(0,1);
-    // g.agregar_arista(0, 2);
-    // g.agregar_arista(1, 2);
-    //
-    // DFS dfs(g);
-    // dfs.ejecutar();
-    // dfs.imprimir_tiempos();
-    // dfs.imprimir_arbol_dfs();
-    //
-    // GrafoPonderado t(5);
-    // t.agregar_arista(0, 1, 3.0);
-    // t.agregar_arista(0, 2, 8.0);
-    // t.agregar_arista(0, 4, -4.0);
-    // t.agregar_arista(1, 4, 7.0);
-    // t.agregar_arista(1, 3, 1.0);
-    // t.agregar_arista(2, 1, 4.0);
-    // t.agregar_arista(3, 0, 2.0);
-    // t.agregar_arista(3, 2, -5.0);
-    // t.agregar_arista(4, 3, 6.0);
-    //
-    // DFS dfs_ponderado(t);
-    // dfs_ponderado.ejecutar();
-
-    // cout << "Hay ciclo? " << dfs_ponderado.hay_ciclo() << endl;
-    // dfs_ponderado.encontrar_componentes_fuertemente_conexas();
-    // for (const auto componentes = dfs_ponderado.obtener_componentes(); auto & componente : componentes) {
-    //     cout << "Componentes fuertemente conexas: ";
-    //     for (const int v : componente) {
-    //         cout << v << " ";
-    //     }
-    //     cout << endl;
-    // }
-    // cout << "orden topologico: ";
-    // for (const list<int> orden_topo = dfs.obtener_orden_topologico(); const int v : orden_topo) {
-    //     cout << v << " ";
-    // }
-    // cout << endl;
-    // dfs.encontrar_componentes_fuertemente_conexas();
-    //
-    // for (const vector<vector<int>> componentes = dfs.obtener_componentes(); auto & componente : componentes) {
-    //     cout << "Componentes fuertemente conexas: ";
-    //     for (const int v : componente) {
-    //         cout << v << " ";
-    //     }
-    //     cout << endl;
-    // }
+    BellmanFord bf2(d);
+    cout << "\n\nEjecutando Bellman-Ford en el grafo d:\n";
+    bf2.encontrar_camino_minimo(0);
+    bf2.imprimir_todos_caminos();
+    bf2.imprimir_tabla_distancias();
+    bf2.imprimir_distancia(4);
     return 0;
 }
