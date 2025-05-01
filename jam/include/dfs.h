@@ -6,6 +6,27 @@
 #include "types.h"
 
 
+/**
+ * @class DFS
+ * @brief Implementación del algoritmo de búsqueda en profundidad (Depth-First Search).
+ *
+ * Esta clase implementa el algoritmo DFS y sus aplicaciones principales en teoría de grafos.
+ * Permite realizar las siguientes operaciones:
+ * - Búsqueda en profundidad básica
+ * - Detección de componentes fuertemente conexas
+ * - Ordenamiento topológico
+ * - Clasificación de aristas
+ * - Detección de ciclos
+ *
+ * Complejidades temporales:
+ * - Construcción: O(|V|) donde |V| es el número de vértices
+ * - DFS básico: O(|V| + |E|) donde |E| es el número de aristas
+ * - Componentes fuertemente conexas: O(|V| + |E|)
+ * - Ordenamiento topológico: O(|V| + |E|)
+ *
+ * Complejidad espacial: O(|V|) para almacenar información de vértices
+ */
+
 class DFS {
 public:
     explicit DFS(const IGrafo& g);

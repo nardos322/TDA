@@ -100,10 +100,14 @@ int main() {
     bf2.imprimir_todos_caminos();
     bf2.imprimir_tabla_distancias();
     bf2.imprimir_distancia(2);
-    vector<int> numeros = {1, 2, 3, 4,5 ,6};
 
+    int grado = d.obtener_grado_salida(0);
 
-    ranges::for_each(numeros, [](const int& n) {cout << n << " ";});
+    for (auto& arista : d) {
+        for (auto& n : arista) {
+            cout << "arista: " << n.origen << " -> " << n.destino << endl;
+        }
+    }
 
     return 0;
 

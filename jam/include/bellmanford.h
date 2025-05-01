@@ -271,6 +271,17 @@ public:
         }
     }
 
+    /**
+     * @brief Imprime la distancia mínima desde el vértice origen al vértice especificado.
+     *
+     * Este método muestra en la salida especificada (por defecto std::cout) la distancia
+     * mínima desde el vértice de origen calculado por el algoritmo de Bellman-Ford hasta
+     * el vértice pasado como parámetro. Si el vértice no es alcanzable, se imprime "INF".
+     *
+     * @param vertice El índice del vértice al que se desea conocer la distancia desde el
+     *                vértice de origen.
+     * @param out Flujo de salida donde se imprimirá el resultado. Por defecto es std::cout.
+     */
     void imprimir_distancia(const int vertice, std::ostream& out = std::cout) const {
         validar_estado();
         const int origen = obtener_origen();

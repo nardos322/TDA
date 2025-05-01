@@ -31,9 +31,9 @@ struct Vertice {
                 descubrimiento(0),
                 finalizacion(0),
                 predecesor(SIN_PREDECESOR),
-                distancia(INFINITO) {}
+                distancia(INFINITO) {
+    }
 };
-
 
 
 struct Arista {
@@ -43,21 +43,20 @@ struct Arista {
     TipoArista tipo;
 
     constexpr explicit Arista(const int orig, const int dest,
-        const double p = 1.0, const TipoArista t = TipoArista::NO_CLASIFICADA)
+                              const double p = 1.0, const TipoArista t = TipoArista::NO_CLASIFICADA)
         : origen(orig), destino(dest), peso(p), tipo(t) {
-
         if (orig < 0 || dest < 0) {
             throw std::invalid_argument("Los vertices deben ser positivos");
         }
     }
 
     bool operator==(const Arista& other) const {
-        return  origen == other.origen && destino == other.destino &&
-                std::abs(peso - other.peso) < 1e-10 && // Tolerancia para doubles
-                tipo == other.tipo;
+        return origen == other.origen && destino == other.destino &&
+               std::abs(peso - other.peso) < 1e-10 && // Tolerancia para doubles
+               tipo == other.tipo;
     }
 
-    bool  operator!=(const Arista& other) const {
+    bool operator!=(const Arista& other) const {
         return !(*this == other);
     }
 
@@ -69,10 +68,8 @@ struct Arista {
             case TipoArista::FORWARD_EDGE: return "forward";
             case TipoArista::CROSS_EDGE: return "cross";
             default: return "tipo desconocido";
-
         }
     }
-
 };
 
 
