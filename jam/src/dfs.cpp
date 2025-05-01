@@ -2,7 +2,6 @@
 #include <string>
 #include "../include/dfs.h"
 #include <algorithm>
-
 #include "igrafo_ponderado.h"
 
 using namespace std;

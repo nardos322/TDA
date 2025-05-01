@@ -1,6 +1,5 @@
 #ifndef BELLMANFORD_H
 #define BELLMANFORD_H
-
 #include "igrafo_ponderado.h"
 #include "types.h"
 #include <vector>
@@ -274,8 +273,8 @@ public:
 
     void imprimir_distancia(const int vertice, std::ostream& out = std::cout) const {
         validar_estado();
-
-        out << "\nDistancia al vertice " << vertice << ": ";
+        const int origen = obtener_origen();
+        out << "\nDistancia del vertice " << origen << " -> " << vertice << ": ";
         if (vertices[vertice].distancia == INFINITO) {
             out << "INF";
         } else {
@@ -294,8 +293,8 @@ public:
 
         // Configuramos formato de salida
         out << std::fixed << std::setprecision((1));
-
-        out << "\nTabla de distancias:\n";
+        const int origen = obtener_origen();
+        out << "\nTabla de distancias: al vertice " << origen << "\n";
         out << std::setw(8) << "Vertice" << std::setw(12) << "Distancia"
                 << std::setw(12) << "Predecesor\n";
         out << std::string(32, '-') << '\n';

@@ -82,12 +82,13 @@ int main() {
     d.agregar_arista(2, 4, 2.0);
     d.agregar_arista(3, 1, 1.0);
     d.agregar_arista(3, 2, 4.0);
-    d.agregar_arista(3, 4, -10.0);
+    d.agregar_arista(3, 4, -8.0);
     d.agregar_arista(4, 0, 3.0);
     d.agregar_arista(4, 2, 7.0);
 
     BellmanFord bf(c);
 
+    cout << "\nEjecutando Bellman-Ford en el grafo c:\n";
     bf.encontrar_camino_minimo(0);
     const vector<vector<int>> caminos = bf.obtener_todos_caminos();
     bf.imprimir_todos_caminos();
@@ -98,6 +99,15 @@ int main() {
     bf2.encontrar_camino_minimo(0);
     bf2.imprimir_todos_caminos();
     bf2.imprimir_tabla_distancias();
-    bf2.imprimir_distancia(4);
+    bf2.imprimir_distancia(2);
+    vector<int> numeros = {1, 2, 3, 4,5 ,6};
+
+
+    ranges::for_each(numeros, [](const int& n) {cout << n << " ";});
+
     return 0;
+
+
+
+
 }
