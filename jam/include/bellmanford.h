@@ -27,7 +27,7 @@ private:
     * @brief Inicializa las distancias y predecesores de todos los vértices,
     *        estableciendo la distancia como 0 para el vértice origen.
     *
-    * Este método se utiliza al inicio del algoritmo para configurar el estado inicial
+    * Este metodo se utiliza al inicio del algoritmo para configurar el estado inicial
     * de las estructuras de datos internas de la clase. Los vértices ya tienen sus
     * valores predeterminados establecidos por el constructor, excepto el vértice
     * de origen, cuya distancia se actualiza a 0.
@@ -44,7 +44,7 @@ private:
     * @brief Relaja la arista entre dos vértices si se encuentra un camino
     *        más corto desde el vértice origen al destino.
     *
-    * El método actualiza la distancia y el predecesor del vértice destino si
+    * El metodo actualiza la distancia y el predecesor del vértice destino si
     * la suma del peso de la arista y la distancia al vértice origen resulta
     * en un valor menor para la distancia actual del vértice destino.
     *
@@ -94,7 +94,7 @@ public:
     *        vértices en un grafo dirigido ponderado utilizando el algoritmo de
     *        Bellman-Ford.
     *
-    * Este método implementa los pasos principales del algoritmo de Bellman-Ford, que
+    * Este metodo implementa los pasos principales del algoritmo de Bellman-Ford, que
     * incluyen la inicialización de las distancias para el vértice origen, la relajación
     * de las aristas repetidamente y la detección de ciclos negativos en el grafo.
     * Si se detecta un ciclo negativo, lanza una excepción.
@@ -162,7 +162,7 @@ public:
     * @brief Recupera el camino más corto desde el vértice origen hasta el vértice destino
     *        utilizando los predecesores calculados por el algoritmo de Bellman-Ford.
     *
-    * Este método devuelve el camino como una secuencia de vértices en orden desde el origen
+    * Este metodo devuelve el camino como una secuencia de vértices en orden desde el origen
     * hasta el destino. Se basa en los datos de predecesores almacenados en la clase.
     * Si no existe un camino hacia el destino, la lista devuelta estará vacía.
     *
@@ -192,7 +192,7 @@ public:
     * @brief Recupera todos los caminos más cortos desde el vértice origen hasta
     *        todos los demás vértices en el grafo.
     *
-    * Este método utiliza los predecesores calculados por el algoritmo de Bellman-Ford
+    * Este metodo utiliza los predecesores calculados por el algoritmo de Bellman-Ford
     * para construir los caminos de todos los vértices accesibles desde el origen.
     * Cada camino se representa como una secuencia de identificadores de vértices,
     * en orden desde el origen hasta el destino correspondiente. Si no existe un
@@ -274,7 +274,7 @@ public:
     /**
      * @brief Imprime la distancia mínima desde el vértice origen al vértice especificado.
      *
-     * Este método muestra en la salida especificada (por defecto std::cout) la distancia
+     * Este metodo muestra en la salida especificada (por defecto std::cout) la distancia
      * mínima desde el vértice de origen calculado por el algoritmo de Bellman-Ford hasta
      * el vértice pasado como parámetro. Si el vértice no es alcanzable, se imprime "INF".
      *

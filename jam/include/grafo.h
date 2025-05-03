@@ -36,7 +36,7 @@ protected:
     /**
      * @brief Imprime la representación de la lista de adyacencia del grafo.
      *
-     * Este método muestra la lista de adyacencia del grafo en el flujo de salida especificado,
+     * Este metodo muestra la lista de adyacencia del grafo en el flujo de salida especificado,
      * lo que permite visualizar las conexiones entre los vértices.
      *
      * @param os Flujo de salida donde se imprimirá la lista de adyacencia. Por defecto, se utiliza std::cout.
@@ -46,7 +46,7 @@ protected:
     /**
      * @brief Imprime la matriz de adyacencia del grafo.
      *
-     * Este método imprime la representación de la matriz de adyacencia
+     * Este metodo imprime la representación de la matriz de adyacencia
      * del grafo en el flujo de salida especificado.
      *
      * @param os Flujo de salida donde se imprimirá la matriz de adyacencia.
@@ -84,7 +84,7 @@ public:
     /**
     * @brief Agrega una arista entre dos vértices en el grafo.
     *
-    * Este método permite la creación de una conexión (arista) entre dos vértices
+    * Este metodo permite la creación de una conexión (arista) entre dos vértices
     * dados, especificados por sus índices. Si el grafo es dirigido, la arista será
     * creada desde el vértice de origen hacia el vértice de destino.
     *
@@ -99,7 +99,7 @@ public:
     /**
      * @brief Agrega una arista con un peso específico entre dos nodos.
      *
-     * Este método permite añadir una arista al grafo ponderado, especificando
+     * Este metodo permite añadir una arista al grafo ponderado, especificando
      * el nodo de origen, el nodo de destino y el peso asociado a la conexión.
      *
      * @param origen Nodo origen de la arista que será agregada.
@@ -114,7 +114,7 @@ public:
     /**
     * @brief Agrega un nuevo vértice al grafo.
     *
-    * Este método permite la adición de un vértice al grafo, incrementando
+    * Este metodo permite la adición de un vértice al grafo, incrementando
     * así el número total de vértices. La implementación específica del
     * comportamiento depende de la clase derivada.
     *
@@ -126,7 +126,7 @@ public:
     /**
     * @brief Elimina la arista entre dos vértices en el grafo.
     *
-    * Este método elimina la conexión (arista) entre los vértices especificados
+    * Este metodo elimina la conexión (arista) entre los vértices especificados
     * por los índices de origen y destino. Si el grafo es dirigido, la eliminación
     * afectará únicamente la dirección especificada (origen -> destino). Si el grafo
     * no es dirigido, eliminará la conexión en ambas direcciones.
@@ -142,7 +142,7 @@ public:
     /**
     * @brief Elimina un vértice del grafo.
     *
-    * Este método elimina un vértice especificado del grafo junto con todas
+    * Este metodo elimina un vértice especificado del grafo junto con todas
     * las aristas asociadas al mismo. El grafo se reorganiza según sea necesario
     * después de la eliminación del vértice.
     *
@@ -156,9 +156,9 @@ public:
     void eliminar_vertice(int vertice) override;
 
     /**
-    * @brief Elimina todo el contenido del grafo.
+    * @brief Limpia el grafo eliminando todos los vértices y aristas.
     *
-    * Este método elimina todos los vértices y aristas presentes en el grafo,
+    * Este metodo elimina todos los vértices y aristas presentes en el grafo,
     * dejando su estructura completamente vacía. Después de esta operación,
     * el grafo no contendrá ningún elemento, y su lista de adyacencia, matriz
     * de adyacencia o estructuras internas estarán vacías.
@@ -171,7 +171,7 @@ public:
     /**
      * @brief Modifica el peso de la arista entre dos nodos.
      *
-     * Este método permite actualizar el peso de una arista existente en el grafo,
+     * Este metodo permite actualizar el peso de una arista existente en el grafo,
      * especificada por su nodo de origen y nodo de destino.
      *
      * @param origen Nodo origen de la arista cuyo peso se desea modificar.
@@ -183,7 +183,7 @@ public:
     /**
     * @brief Comprueba la existencia de una arista entre dos vértices.
     *
-    * Este método verifica si existe una conexión (arista) entre dos vértices
+    * Este metodo verifica si existe una conexión (arista) entre dos vértices
     * especificados por sus índices. La implementación depende de la clase
     * derivada y puede variar según el tipo de grafo (dirigido o no dirigido).
     *
@@ -200,19 +200,19 @@ public:
     /**
     * @brief Obtiene las aristas asociadas a un vértice específico en el grafo.
     *
-    * Este método devuelve una lista de aristas que están conectadas al vértice
+    * Este metodo devuelve una lista de aristas que están conectadas al vértice
     * especificado. La implementación depende del tipo de grafo (dirigido o no dirigido)
     * y puede variar según cómo se almacenen las aristas.
     *
     * @param vertice Índice del vértice para el cual se desean obtener las aristas.
     * @return std::vector<Arista> Lista de aristas conectadas al vértice especificado.
     */
-    [[nodiscard]] std::vector<Arista> obtener_aristas(int vertice) const override;
+    [[nodiscard]]const std::vector<Arista>& obtener_aristas(int vertice) const override;
 
     /**
     * @brief Obtiene el número total de vértices en el grafo.
     *
-    * Este método devuelve la cantidad de vértices presentes en el grafo
+    * Este metodo devuelve la cantidad de vértices presentes en el grafo
     * en un momento dado. La implementación exacta de cómo se almacena y
     * se cuenta esta información depende de la clase derivada.
     *
@@ -223,7 +223,7 @@ public:
     /**
     * @brief Obtiene el número de aristas presentes en el grafo.
     *
-    * Este método devuelve la cantidad total de aristas almacenadas en la estructura del grafo.
+    * Este metodo devuelve la cantidad total de aristas almacenadas en la estructura del grafo.
     * Es útil para conocer la densidad o tamaño del grafo.
     *
     * @return El número de aristas en el grafo.
@@ -233,7 +233,7 @@ public:
     /**
     * @brief Obtiene el grado de un vértice en el grafo.
     *
-    * Este método retorna el número de aristas conectadas al vértice especificado.
+    * Este metodo retorna el número de aristas conectadas al vértice especificado.
     * Es útil para determinar la conectividad de un nodo en el grafo.
     *
     * @param vertice El identificador del vértice cuyo grado se desea obtener.
@@ -255,7 +255,7 @@ public:
     /**
     * @brief Obtiene el grado de salida de un vértice específico en el grafo.
     *
-    * Este método devuelve el número de aristas salientes desde un vértice dado.
+    * Este metodo devuelve el número de aristas salientes desde un vértice dado.
     *
     * @param vertice El identificador del vértice del cual se desea obtener el grado de salida.
     * @return El grado de salida del vértice especificado.
@@ -266,7 +266,7 @@ public:
     /**
      * @brief Obtiene el peso de la arista entre dos vértices.
      *
-     * Este método devuelve el peso de la arista que conecta los vértices de origen y destino
+     * Este metodo devuelve el peso de la arista que conecta los vértices de origen y destino
      * en el grafo. Si la arista no existe, lanza una excepción indicando el error.
      *
      * @param origen El vértice de origen de la arista.
@@ -277,15 +277,15 @@ public:
     [[nodiscard]] double obtener_peso(int origen, int destino) const override;
 
     /**
-     * @brief Obtiene los vértices adyacentes a un vértice dado.
-     *
-     * Este método devuelve una lista con los vértices que están directamente conectados
-     * al vértice especificado. Es útil para realizar operaciones relacionadas con
-     * el análisis o recorrido de grafos.
-     *
-     * @param vertice El vértice para el cual se desean obtener los vértices adyacentes.
-     * @return Un vector constante que contiene los índices de los vértices adyacentes al vértice especificado.
-     */
+    * @brief Obtiene los vértices adyacentes a un vértice dado.
+    *
+    * Este metodo devuelve una lista con los vértices que están directamente conectados
+    * al vértice especificado. Es útil para realizar operaciones relacionadas con
+    * el análisis o recorrido de grafos.
+    *
+    * @param vertice El vértice para el cual se desean obtener los vértices adyacentes.
+    * @return Un vector constante que contiene los índices de los vértices adyacentes al vértice especificado.
+    */
     [[nodiscard]] const std::vector<int> obtener_adyacentes(int vertice) const override;
 
     /**
@@ -302,7 +302,7 @@ public:
     /**
     * @brief Obtiene un grafo transpuesto basado en el grafo actual.
     *
-    * Este método crea y devuelve un grafo transpuesto, donde todas las aristas
+    * Este metodo crea y devuelve un grafo transpuesto, donde todas las aristas
     * del grafo original tienen su dirección invertida. Se aplica principalmente
     * en algoritmos donde el grafo transpuesto es necesario para realizar análisis
     * y recorridos específicos.
@@ -315,7 +315,7 @@ public:
     * @fn virtual bool esta_vacio() const = 0
     * @brief Verifica si el grafo está vacío.
     *
-    * Este método comprueba si el grafo no contiene vértices ni aristas.
+    * Este metodo comprueba si el grafo no contiene vértices ni aristas.
     *
     * @return true si el grafo está vacío, false en caso contrario.
     */
@@ -345,7 +345,7 @@ public:
     /**
      * @brief Crea una copia profunda del grafo actual.
      *
-     * Este método permite obtener un nuevo objeto que es una copia autónoma del grafo
+     * Este metodo permite obtener un nuevo objeto que es una copia autónoma del grafo
      * original, incluyendo su estructura y propiedades. Garantiza que los cambios
      * realizados en el clon no afecten al grafo original ni viceversa.
      *
@@ -356,7 +356,7 @@ public:
     /**
     * @brief Indica si el grafo es dirigido.
     *
-    * Este método verifica si el grafo está configurado como un grafo dirigido,
+    * Este metodo verifica si el grafo está configurado como un grafo dirigido,
     * es decir, un grafo en el que las aristas tienen una dirección definida.
     *
     * @return true si el grafo es dirigido, false en caso contrario.
@@ -366,7 +366,7 @@ public:
     /**
      * @brief Determina si el grafo es ponderado.
      *
-     * Este método indica si el grafo tiene asignados pesos a sus aristas.
+     * Este metodo indica si el grafo tiene asignados pesos a sus aristas.
      * Los grafos ponderados asocian valores (pesos) a las conexiones entre vértices,
      * lo cual puede ser utilizado en varios algoritmos como los de rutas mínimas.
      *
@@ -389,7 +389,7 @@ public:
     /**
     * @brief Devuelve un iterador constante al inicio de la colección.
     *
-    * Este método proporciona un iterador constante que apunta al primer elemento
+    * Este metodo proporciona un iterador constante que apunta al primer elemento
     * de la colección asociada. Es útil para realizar recorridos en un contexto
     * constante donde no se pueden modificar los elementos.
     *
@@ -400,7 +400,7 @@ public:
     /**
      * @brief Devuelve el iterador constante al final de la colección de elementos del grafo.
      *
-     * Este método proporciona un iterador constante que apunta al final
+     * Este metodo proporciona un iterador constante que apunta al final
      * de la estructura de almacenamiento utilizada por el grafo,
      * permitiendo recorrer su contenido en operaciones de iteración.
      *
@@ -412,7 +412,7 @@ public:
     /**
      * @brief Devuelve un iterador al inicio de la colección.
      *
-     * Este método proporciona un iterador que apunta al primer elemento
+     * Este metodo proporciona un iterador que apunta al primer elemento
      * de la colección asociada a la instancia.
      *
      * @return iterator Un iterador que apunta al inicio de la colección.
@@ -422,7 +422,7 @@ public:
     /**
      * @brief Obtiene un iterador al final de la colección de elementos del grafo.
      *
-     * Este método devuelve un iterador representando la posición final de la
+     * Este metodo devuelve un iterador representando la posición final de la
      * colección, que no corresponde a ningún elemento válido.
      * Usar este iterador es útil para comparar límites en procesos de iteración.
      *

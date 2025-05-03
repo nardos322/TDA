@@ -9,7 +9,7 @@
 /**
  * @brief Valida que un vértice sea válido dentro de los límites del grafo.
  *
- * Este método comprueba que el índice del vértice esté dentro del
+ * Este metodo comprueba que el índice del vértice esté dentro del
  * rango permitido por el número total de vértices del grafo.
  * Si el índice está fuera del rango, lanza una excepción de tipo std::out_of_range.
  *
@@ -45,7 +45,7 @@ protected:
     /**
      * @brief Verifica que un vértice sea válido dentro de un rango de vértices permitido.
      *
-     * Este método valida si el índice del vértice proporcionado está dentro del rango
+     * Este metodo valida si el índice del vértice proporcionado está dentro del rango
      * válido definido por la cantidad total de vértices en el grafo. Si no lo está,
      * lanza una excepción de tipo std::out_of_range.
      *
@@ -79,7 +79,7 @@ public:
     virtual void eliminar_vertice(int vertice) = 0;
     virtual void limpiar() = 0;
     [[nodiscard]] virtual bool existe_arista(int origen, int destino) const = 0;
-    [[nodiscard]] virtual std::vector<Arista> obtener_aristas(int vertice) const = 0;
+    [[nodiscard]] virtual const std::vector<Arista>& obtener_aristas(int vertice) const = 0;
     [[nodiscard]] virtual size_t obtener_num_vertices() const = 0;
     [[nodiscard]] virtual size_t otener_num_aristas() const = 0;
     [[nodiscard]] virtual int obtener_grado(int vertice) const = 0;

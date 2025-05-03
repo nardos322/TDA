@@ -121,7 +121,7 @@ bool Grafo::existe_arista(const int origen, const int destino) const {
            != lista_adyacencia[origen].end();
 }
 
-std::vector<Arista> Grafo::obtener_aristas(const int vertice) const {
+const std::vector<Arista>& Grafo::obtener_aristas(const int vertice) const {
     validar_vertice(vertice, obtener_num_vertices());
     return lista_adyacencia[vertice];
 }

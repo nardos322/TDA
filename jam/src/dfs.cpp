@@ -3,7 +3,6 @@
 #include "../include/dfs.h"
 #include <algorithm>
 #include "igrafo_ponderado.h"
-
 using namespace std;
 
 
@@ -152,7 +151,7 @@ void DFS::imprimir_arbol_dfs() const {
 
 // Metodos privados
 
-void DFS::clasificar_arista(int u, int v, const TipoArista tipo) {
+void DFS::clasificar_arista(const int u, const int v, const TipoArista tipo) {
     double peso = 1.0; // valor predeterminado
 
     // Como grafo es de tipo IGrafo&, necesitamos hacer un dynamic_cast
