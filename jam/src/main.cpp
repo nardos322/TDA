@@ -81,7 +81,7 @@ FloydResult floyd_warshall(const IGrafoPonderado& grafo) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (dist[i][k] != INFINITO && dist[k][j] != INFINITO) {
-                    double nueva_dist = dist[i][k] + dist[k][j];
+                    const double nueva_dist = dist[i][k] + dist[k][j];
                     if (nueva_dist < dist[i][j]) {
                         dist[i][j] = nueva_dist;
                         pred[i][j] = pred[k][j];
@@ -103,8 +103,8 @@ FloydResult floyd_warshall(const IGrafoPonderado& grafo) {
 }
 
 // Funiones auxiliares para recuperar caminos y mostrar resultados
-vector<int> reconstuir_camino(const vector<vector<int>>& pred, int origen, int destino) {
-    if (pred[origen][destino] == SIN_PREDECESOR) {
+vector<int> reconstuir_camino(const vector<vector<int>>& predecesores, int origen, int destino) {
+    if (predecesores[origen][destino] == SIN_PREDECESOR) {
         return {};
     }
 
@@ -112,7 +112,7 @@ vector<int> reconstuir_camino(const vector<vector<int>>& pred, int origen, int d
     camino.push_back(destino);
 
     while (origen != destino) {
-        destino = pred[origen][destino];
+        destino = predecesores[origen][destino];
         camino.push_back(destino);
     }
 
@@ -138,21 +138,21 @@ void imprimir_matriz_distancias(const vector<vector<double>>& distancias, ostrea
             if (distancias[i][j] == INFINITO) {
                 os << setw(8) << "INF";
             } else {
-                os << setw(8) << fixed << setprecision(2) << distancias[i][j];
+                os << setw(8) << fixed << setprecision(1) << distancias[i][j];
             }
         }
         os << "\n";
     }
 }
 
-void imprimir_camino(const vector<int>& camino, const vector<vector<double>>& dist,
+void imprimir_camino(const vector<int>& camino, const vector<vector<double>>& distancias,
                      int origen, int destino, ostream& os = cout) {
     if (camino.empty()) {
         os << "No hay camino entre " << origen << " y " << destino << "\n";
         return;
     }
 
-    os << "Camino de " << origen << " a " << destino << " (distancia: " << dist[origen][destino] << "): ";
+    os << "Camino de " << origen << " a " << destino << " (distancia: " << distancias[origen][destino] << "): ";
     for (int i = 0; i < camino.size(); i++) {
         os << camino[i];
         if (i < camino.size() - 1) {
@@ -200,21 +200,40 @@ int main() {
     d.agregar_arista(4, 0, 3.0);
     d.agregar_arista(4, 2, 7.0);
 
-    BellmanFord bf(c);
+    Grafo f(4, true);
 
-    cout << "\nEjecutando Bellman-Ford en el grafo c:\n";
-    bf.encontrar_camino_minimo(0);
-    const vector<vector<int>> caminos = bf.obtener_todos_caminos();
-    bf.imprimir_todos_caminos();
-    bf.imprimir_tabla_distancias();
+    f.agregar_arista(0, 1, 2.0);
+    f.agregar_arista(0, 2, 10.0);
+    f.agregar_arista(0, 3, 6.0);
+    f.agregar_arista(1, 3, 3.0);
+    f.agregar_arista(2, 1, -3.0);
+    f.agregar_arista(3, 1, 3.0);
+    f.agregar_arista(3, 2, 1.0);
 
-    BellmanFord bf2(d);
-    cout << "\n\nEjecutando Bellman-Ford en el grafo d:\n";
-    bf2.encontrar_camino_minimo(0);
-    bf2.imprimir_todos_caminos();
-    bf2.imprimir_tabla_distancias();
-    bf2.imprimir_distancia(2);
 
+    FloydResult resultado = floyd_warshall(f);
+    vector<int> camino = reconstuir_camino(resultado.predecesores, 0, 3);
+
+    imprimir_matriz_distancias(resultado.distancias);
+    cout << resultado.tiene_ciclo_negativo << endl;
+    cout <<"camino de 0 a 3\n";
+    imprimir_camino(camino, resultado.distancias, 0, 3);
+
+    // BellmanFord bf(c);
+    //
+    // cout << "\nEjecutando Bellman-Ford en el grafo c:\n";
+    // bf.encontrar_camino_minimo(0);
+    // const vector<vector<int>> caminos = bf.obtener_todos_caminos();
+    // bf.imprimir_todos_caminos();
+    // bf.imprimir_tabla_distancias();
+    //
+    // BellmanFord bf2(d);
+    // cout << "\n\nEjecutando Bellman-Ford en el grafo d:\n";
+    // bf2.encontrar_camino_minimo(0);
+    // bf2.imprimir_todos_caminos();
+    // bf2.imprimir_tabla_distancias();
+    // bf2.imprimir_distancia(2);
+    //
 
 
     return 0;

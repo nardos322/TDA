@@ -105,6 +105,8 @@ public:
     *
     * @throws std::invalid_argument Si el vértice origen está fuera del rango permitido.
     * @throws std::runtime_error Si se detecta un ciclo negativo en el grafo.
+    *
+    * @complexity Tiempo: O(|V| * |E|) donde |V| es el número de vértices y |E| es el número de aristas.
     */
     void encontrar_camino_minimo(const int origen) {
         if (origen < 0 || origen >= grafo.obtener_num_vertices()) {
@@ -114,13 +116,13 @@ public:
         initialize_single_source(origen);
         const int num_vertices = grafo.obtener_num_vertices();
 
-        // Relajacion de aristas |V| - 1 veces
-        for (int i = 1; i < num_vertices; i++) {
+        // Relajacion de aristas |V| - 1 veces --- O(|V| * |E|)
+        for (int i = 1; i < num_vertices; i++) {    //O(|V| - 1)
             // Para cada arista (u,v) ∈ G.E
-            for (int u = 0; u < num_vertices; u++) {
-                for (const int v: grafo.obtener_adyacentes(u)) {
-                    relax(u, v);
-                }
+            for (int u = 0; u < num_vertices; u++) {    //O(|V|) pero al juntar los 2 for internos queda O(|E|)
+                for (const int v: grafo.obtener_adyacentes(u)) {  //O(d)   donde d es el grado de salida del vertice u
+                    relax(u, v);                                  //  como obtenemos los adyacentes para todo u ∈ G.V
+                }                                                // es decir recorremos todas las aristas |E|
             }
         }
 
