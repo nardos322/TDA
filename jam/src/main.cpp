@@ -162,6 +162,43 @@ void imprimir_camino(const vector<int>& camino, const vector<vector<double>>& di
     os << "\n";
 }
 
+
+vector<int> recursive_activity_selector(const vector<int>& s, const vector<int>& f, int k, int n) {
+    int m = k + 1;
+    // Encontrar la primera actividad a_m que empieza despues de que termina a_k
+    while (m <= n && s[m] < f[k]) {
+        m++;
+    }
+
+    if (m <= n) {
+        // Seleccionamos a_m  y llamamos recursivamente desde m
+        vector result { m };
+        vector<int> next = recursive_activity_selector(s, f, m, n);
+        result.insert(result.end(), next.begin(), next.end());
+        return result;
+    } else {
+        // No quedan actividades compatibles
+        return {};
+    }
+}
+
+vector<int> greedy_activity_selector(const vector<int>& s, const vector<int>& f) {
+    vector<int> seleccionadas;
+    int n = s.size() - 1; // numero de actividades
+    seleccionadas.push_back(1); // seleccionamos la primera actividad
+
+    int k = 1; // ultima actividad seleccionada
+    for (int m = 1; m <= n; m++) {
+        if (s[m] >= f[k]) { // si la actividad m es compatible con la ultima seleccionada
+            seleccionadas.push_back(m);
+            k = m; // actualizamos la ultima actividad seleccionada
+        }
+    }
+    return seleccionadas;
+}
+
+
+
 int main() {
     Grafo g(3);
     g.agregar_arista(0, 1);
@@ -214,10 +251,23 @@ int main() {
     FloydResult resultado = floyd_warshall(f);
     vector<int> camino = reconstuir_camino(resultado.predecesores, 0, 3);
 
-    imprimir_matriz_distancias(resultado.distancias);
-    cout << resultado.tiene_ciclo_negativo << endl;
-    cout <<"camino de 0 a 3\n";
-    imprimir_camino(camino, resultado.distancias, 0, 3);
+
+    vector<int> s = {0, 3, 2, 6, 10};   // tiempos de inicio
+    vector<int> p = {0, 4, 7,10,11};   // tiempos de fin
+    int n = s.size() - 1;   // numero de actividades
+
+    // vector<int> seleccionados = recursive_activity_selector(s,p,0,n);
+    vector<int> seleccionados = greedy_activity_selector(s,p);
+
+    cout << "actividades seleccionadas (indices): ";
+    for (int idx : seleccionados) {
+        cout << idx << " ";
+    }
+    cout << "\n";
+    // imprimir_matriz_distancias(resultado.distancias);
+    // cout << resultado.tiene_ciclo_negativo << endl;
+    // cout <<"camino de 0 a 3\n";
+    // imprimir_camino(camino, resultado.distancias, 0, 3);
 
     // BellmanFord bf(c);
     //
