@@ -8,7 +8,8 @@ using namespace std;
 
 DFS::DFS(const IGrafo& g) : grafo(g),
                             vertices(g.obtener_num_vertices()),
-                            tiempo(0), tiene_ciclo(false) {}
+                            tiempo(0), tiene_ciclo(false) {
+}
 
 void DFS::ejecutar() {
     // Reiniciar estado
@@ -38,7 +39,7 @@ void DFS::encontrar_componentes_fuertemente_conexas() {
     const std::unique_ptr<IGrafo> grafo_transpuesto = grafo.obtener_transpuesto();
 
     // Paso 4: Reiniciamos el estado de los vertices
-    for (auto& v : vertices) {
+    for (auto& v: vertices) {
         v.color = Color::WHITE;
         v.predecesor = SIN_PREDECESOR;
     }
@@ -48,15 +49,13 @@ void DFS::encontrar_componentes_fuertemente_conexas() {
     tiempo = 0;
 
     // Paso 6: Segunda pasada DFS en orden descendente de finalización
-    for (const int v : orden) {
+    for (const int v: orden) {
         if (vertices[v].color == Color::WHITE) {
             componente_actual.clear();
             dfs_visitar_scc(v, *grafo_transpuesto);
             componentes_fuertemente_conexas.push_back(componente_actual);
-
         }
     }
-
 }
 
 std::vector<std::vector<int>> DFS::obtener_componentes() const {
@@ -75,14 +74,14 @@ vector<Arista> DFS::obtener_aristas_clasificadas() const {
 
 void DFS::imprimir_aristas_clasificadas() const {
     if (aristas_clasificadas.empty()) {
-        cout <<"\nNo hay aristas clasificadas.\n";
+        cout << "\nNo hay aristas clasificadas.\n";
         cout << "Ejecuta ejecutar() primero.\n";
         return;
     }
-    cout <<"\nClasificacion de aristas:\n";
-    for (const auto& arista : aristas_clasificadas) {
+    cout << "\nClasificacion de aristas:\n";
+    for (const auto& arista: aristas_clasificadas) {
         cout << "Arista (" << arista.origen << ", " << arista.destino
-             << ") es de tipo " << arista.obtener_tipo_str() << endl;
+                << ") es de tipo " << arista.obtener_tipo_str() << endl;
     }
 }
 
@@ -95,7 +94,7 @@ void DFS::imprimir_orden_topologico() const {
 
     cout << "\nOrden topológico:\n";
     bool primero = true;
-    for (const int v : orden) {
+    for (const int v: orden) {
         if (!primero) {
             cout << "->";
         }
@@ -116,7 +115,7 @@ void DFS::imprimir_componentes_fuertemente_conexas() const {
     for (size_t i = 0; i < componentes_fuertemente_conexas.size(); i++) {
         cout << "Componente " << i + 1 << ": { ";
         bool primero = true;
-        for (const int v : componentes_fuertemente_conexas[i]) {
+        for (const int v: componentes_fuertemente_conexas[i]) {
             if (!primero) {
                 cout << ", ";
             }
@@ -127,8 +126,6 @@ void DFS::imprimir_componentes_fuertemente_conexas() const {
     }
     cout << "Total de componentes: " << componentes_fuertemente_conexas.size() << endl;
 }
-
-
 
 
 void DFS::imprimir_tiempos() const {
@@ -160,7 +157,6 @@ void DFS::clasificar_arista(const int u, const int v, const TipoArista tipo) {
             peso = grafo_ponderado->obtener_peso(u, v);
         } catch (const runtime_error&) {
             // Si falla al obtener el peso, mantenemos el peso predeterminado
-
         }
     }
     const Arista arista(u, v, peso, tipo);
@@ -195,15 +191,14 @@ void DFS::dfs_visitar(const int u) {
     if (!tiene_ciclo) {
         orden_topologico.push_front(u);
     }
-
 }
 
 void DFS::dfs_visitar_scc(const int u, const IGrafo& g_transpuesto) {
     tiempo++;
     vertices[u].descubrimiento = tiempo;
     vertices[u].color = Color::GREY;
-    componente_actual.push_back(u);  // Agregar vertice a la componente actual
-    for (const int v : g_transpuesto.obtener_adyacentes(u)) {
+    componente_actual.push_back(u); // Agregar vertice a la componente actual
+    for (const int v: g_transpuesto.obtener_adyacentes(u)) {
         if (vertices[v].color == Color::WHITE) {
             vertices[v].predecesor = u;
             dfs_visitar_scc(v, g_transpuesto);
@@ -212,13 +207,11 @@ void DFS::dfs_visitar_scc(const int u, const IGrafo& g_transpuesto) {
     vertices[u].color = Color::BLACK;
     tiempo++;
     vertices[u].finalizacion = tiempo;
-
-
 }
 
 std::vector<int> DFS::obtener_vertices_por_finalizacion() const {
     // Crear un vector de pares (tiempo de finalizacion, indice del vertice)
-    std::vector<std::pair<int,int>> vertices_tiempo;
+    std::vector<std::pair<int, int>> vertices_tiempo;
     vertices_tiempo.reserve(vertices.size());
     for (int i = 0; i < vertices.size(); i++) {
         vertices_tiempo.push_back({vertices[i].finalizacion, i});
@@ -226,14 +219,14 @@ std::vector<int> DFS::obtener_vertices_por_finalizacion() const {
 
     // Ordenar por tiempo de finalizacion (descendente)
     ranges::sort(vertices_tiempo,
-                 [](const auto& a, const auto& b ) {
+                 [](const auto& a, const auto& b) {
                      return a.first > b.first;
                  });
 
     // Extraer solo los indices de vertices
     std::vector<int> result;
     result.reserve(vertices_tiempo.size());
-    for (const auto& par : vertices_tiempo) {
+    for (const auto& par: vertices_tiempo) {
         result.push_back(par.second);
     }
     return result;

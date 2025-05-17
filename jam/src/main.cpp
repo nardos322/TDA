@@ -304,9 +304,12 @@ int main() {
     f.agregar_arista(3, 1, 3.0);
     f.agregar_arista(3, 2, 1.0);
 
+    DFS dfs(g);
 
-    vector<bool> visitado(d.obtener_num_vertices(), false);
-    cout << "BFS desde vertice 0:\n";
+    dfs.ejecutar();
+    dfs.imprimir_tiempos();
+    vector visitado(d.obtener_num_vertices(), false);
+    cout << "\nBFS desde vertice 0:\n";
     bfs(d, visitado, 0);
     // cout << "DFS desde vertice 0:\n";
     // dfs_basic(d, visitado, 0);
