@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 #include <vector>
 #include "../include/grafo.h"
 #include "../include/dfs.h"
@@ -6,13 +7,54 @@
 
 using namespace std;
 
-
-void dfs_basic(const vector<vector<int>>& grafo, vector<bool>& visitado, const int vertice) {
+/**
+ * @brief Realiza un recorrido en profundidad (DFS) desde un vértice inicial
+ *
+ * @param grafo Lista de adyacencia que representa el grafo
+ * @param visitado Vector que marca los vértices visitados
+ * @param vertice Vértice actual a visitar
+ *
+ * Complejidad temporal: O(|V| + |E|) donde |V| es el número de vértices y |E| el de aristas
+ * Complejidad espacial: O(|V|) para la recursión y el vector de visitados
+ */
+void dfs_basic(const Grafo& grafo, vector<bool>& visitado, const int vertice) {
     visitado[vertice] = true;
     cout << "visitando vertice: " << vertice << endl;
-    for (const int vecino : grafo[vertice]) {
+    for (const int vecino : grafo.obtener_adyacentes(vertice)) {
         if (!visitado[vecino]) {
             dfs_basic(grafo, visitado, vecino);
+        }
+    }
+}
+
+/**
+ * @brief Realiza un recorrido en anchura (BFS) desde un vértice raíz
+ *
+ * Recorre el grafo nivel por nivel, visitando primero todos los vecinos
+ * de un vértice antes de moverse al siguiente nivel.
+ *
+ * @param inicio Vértice desde donde comienza el recorrido
+ * @param grafo Grafo a recorrer
+ * @param visitado Vector que marca los vértices visitados
+ *
+ * Complejidad temporal: O(|V| + |E|) donde |V| es el número de vértices y |E| el de aristas
+ * Complejidad espacial: O(|V|) para la cola y el vector de visitados
+ */
+void bfs(const Grafo& grafo, vector<bool>& visitado, const int inicio) {
+    queue<int> q;
+    q.push(inicio);
+    visitado[inicio] = true;
+
+    while (!q.empty()) {
+        const int vertice = q.front();
+        q.pop();
+        cout << "Visitando vertice: " << vertice << endl;
+
+        for (const int vecino : grafo.obtener_adyacentes(vertice)) {
+            if (!visitado[vecino]) {
+                visitado[vecino] = true;
+                q.push(vecino);
+            }
         }
     }
 }
@@ -263,22 +305,28 @@ int main() {
     f.agregar_arista(3, 2, 1.0);
 
 
-    const FloydResult resultado = floyd_warshall(f);
-    const vector<int> camino = reconstuir_camino(resultado.predecesores, 0, 3);
+    vector<bool> visitado(d.obtener_num_vertices(), false);
+    cout << "BFS desde vertice 0:\n";
+    bfs(d, visitado, 0);
+    // cout << "DFS desde vertice 0:\n";
+    // dfs_basic(d, visitado, 0);
 
-
-    vector<int> s = {0, 3, 2, 6, 10};   // tiempos de inicio
-    vector<int> p = {0, 4, 7,10,11};   // tiempos de fin
-    int n = s.size() - 1;   // numero de actividades
-
-    // vector<int> seleccionados = recursive_activity_selector(s,p,0,n);
-    vector<int> seleccionados = greedy_activity_selector(s,p);
-
-    cout << "actividades seleccionadas (indices): ";
-    for (int idx : seleccionados) {
-        cout << idx << " ";
-    }
-    cout << "\n";
+    // const FloydResult resultado = floyd_warshall(f);
+    // const vector<int> camino = reconstuir_camino(resultado.predecesores, 0, 3);
+    //
+    //
+    // const vector<int> s = {0, 3, 2, 6, 10};   // tiempos de inicio
+    // const vector<int> p = {0, 4, 7,10,11};   // tiempos de fin
+    // int n = s.size() - 1;   // numero de actividades
+    //
+    // // vector<int> seleccionados = recursive_activity_selector(s,p,0,n);
+    // const vector<int> seleccionados = greedy_activity_selector(s,p);
+    //
+    // cout << "actividades seleccionadas (indices): ";
+    // for (const int idx : seleccionados) {
+    //     cout << idx << " ";
+    // }
+    // cout << "\n";
     // imprimir_matriz_distancias(resultado.distancias);
     // cout << resultado.tiene_ciclo_negativo << endl;
     // cout <<"camino de 0 a 3\n";
