@@ -10,7 +10,7 @@ using namespace std;
 void dfs_basic(const vector<vector<int>>& grafo, vector<bool>& visitado, const int vertice) {
     visitado[vertice] = true;
     cout << "visitando vertice: " << vertice << endl;
-    for (const int vecino: grafo[vertice]) {
+    for (const int vecino : grafo[vertice]) {
         if (!visitado[vecino]) {
             dfs_basic(grafo, visitado, vecino);
         }
@@ -55,6 +55,21 @@ struct FloydResult {
     }
 };
 
+/**
+ * @brief Implementa el algoritmo de Floyd-Warshall para encontrar los caminos más cortos entre
+ * todos los pares de vértices en un grafo.
+ *
+ * @param grafo Una referencia constante a un objeto que implementa la interfaz IGrafoPonderado
+ *
+ * @return FloydResult Una estructura que contiene:
+ *         - distancias: Matriz de distancias mínimas entre todos los pares de vértices
+ *         - predecesores: Matriz de predecesores para reconstruir los caminos
+ *         - tiene_ciclo_negativo: Indicador de si existe algún ciclo negativo en el grafo
+ *
+ * @complexity La complejidad temporal del algoritmo es O(V³), donde V es el número de vértices
+ * @note El grafo puede contener pesos negativos, pero detectará si hay ciclos negativos
+ * @throws No lanza excepciones
+ */
 FloydResult floyd_warshall(const IGrafoPonderado& grafo) {
     const int n = grafo.obtener_num_vertices();
     FloydResult result(n);
@@ -211,8 +226,8 @@ int main() {
     f.agregar_arista(3, 2, 1.0);
 
 
-    FloydResult resultado = floyd_warshall(f);
-    vector<int> camino = reconstuir_camino(resultado.predecesores, 0, 3);
+    const FloydResult resultado = floyd_warshall(f);
+    const vector<int> camino = reconstuir_camino(resultado.predecesores, 0, 3);
 
     imprimir_matriz_distancias(resultado.distancias);
     cout << resultado.tiene_ciclo_negativo << endl;
@@ -234,7 +249,5 @@ int main() {
     // bf2.imprimir_tabla_distancias();
     // bf2.imprimir_distancia(2);
     //
-
-
     return 0;
 }

@@ -51,6 +51,8 @@ private:
     * @param u Vértice de origen desde el cual se está relajando la arista.
     * @param v Vértice de destino al cual se está verificando si se puede reducir
     *          la distancia mediante la relajación de la arista.
+    *
+    * @complexity Tiempo: O(1)
     */
     void relax(const int u, const int v) {
         if (const double peso_u_v = grafo.obtener_peso(u, v);
@@ -121,8 +123,8 @@ public:
             // Para cada arista (u,v) ∈ G.E
             for (int u = 0; u < num_vertices; u++) {    //O(|V|) pero al juntar los 2 for internos queda O(|E|)
                 for (const int v: grafo.obtener_adyacentes(u)) {  //O(d)   donde d es el grado de salida del vertice u
-                    relax(u, v);                                  //  como obtenemos los adyacentes para todo u ∈ G.V
-                }                                                // es decir recorremos todas las aristas |E|
+                    relax(u, v);                                  //  como obtenemos los adyacentes para todo u ∈ G.V,
+                }                                                // es decir recorremos todas las aristas que es igual a |E|
             }
         }
 

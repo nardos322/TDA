@@ -76,8 +76,9 @@ public:
      *
      * @throws std::invalid_argument Si num_vertices es negativo
      *
-     * @complexity Tiempo: O(|V|) para inicializar la lista de adyacencia
-     * @complexity Espacio: O(|V|) para almacenar la estructura inicial
+     * Complejidades:
+     * - Tiempo: O(|V|) para inicializar la lista de adyacencia
+     * - Espacio: O(|V|) para almacenar la estructura inicial
      */
     explicit Grafo(int num_vertices, bool ponderado = false, bool dirigido = true);
 
