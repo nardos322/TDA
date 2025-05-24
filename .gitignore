@@ -18,3 +18,25 @@
 
 # Directorios de construcción
 **/cmake-build-debug/
+
+# Ignorar archivos generados por LaTeX en cualquier carpeta
+**/*.aux
+**/*.bbl
+**/*.blg
+**/*.brf
+**/*.fdb_latexmk
+**/*.fls
+**/*.log
+**/*.out
+**/*.toc
+**/*.lof
+**/*.lot
+**/*.synctex.gz
+**/*.nav
+**/*.snm
+**/*.vrb
+
+# Archivos temporales
+**/*~
+**/*.bak
+**/*.tmp
