@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}  
@@ -11,6 +11,7 @@
 \renewcommand{\proofname}{Demostración}
 \title{Practica BFS, Dijsktra, AGM} 
 \author{Nahuel}
+
 \begin{document}
 \maketitle
 \section{Ejercicio 1 solucion}
@@ -145,4 +146,32 @@ Por lo tanto, \(T\) \textbf{no puede} obtenerse con BFS desde \(v\).
 
   \item el grafo y el árbol anteriores son un \emph{contraejemplo concreto}.
 \end{itemize}
+
+\section{Ejercicio 3 Solucion}
+\begin{theorem}
+Sea $G=(V,E)$ un digrafo. Sea \textbf{$H$} el digrafo bipartito construido 
+de la siguiente forma:
+\begin{itemize}
+  \item $\forall v \in V(G)$ se crean dos copias $v^0$ y $v^1$
+  \item $\forall (u,v) \in E(G)$, se agrega la arista dirigida $(u^0,v^1) \in E(H)$
+\end{itemize}
+Entonces, una secuencia de vertices $v_1^1, v_2^0, \dots, v_k^{k \bmod 2}$ 
+es un recorrido en $H$
+\end{theorem}
+\noindent\textit{Nota:} Para que el enunciado tenga sentido y la equivalencia sea válida en ambos sentidos, 
+asumimos que por cada arista $(v, w) \in E(G)$, el grafo $H$ contiene tanto la arista $v^0 \to w^1$ 
+como la arista $v^1 \to w^0$.
+
+\begin{proof}
+  $(\Rightarrow)$ Suongamos que $v_1,v_2, \dots, v_k$ es un recorrido de $G$. Entonces
+  por definicion de recorrido de un digrafo se cumple
+  \[ \forall i \in \{1, \dots, k - 1\} \quad (v_i, v_{i+1}) \in E(G) \]
+  Por la construccion del grafo $H$, existe una arista $(v_i^{i \bmod 2}, v_{i+1}^{i \bmod 2}) \in H $
+  si y solo si $(v_i,v_{i+1}) \in E(G)$ \\ \\
+  Por lo tanto: 
+  \[(v_1^1,v_2^0),(v_2^0,v_3^1), \dots, (v_{k-1}^{k \bmod 2}, v_k^{k \bmod 2}) \in E(H) \] \\
+  Es decir, la secuencia $v_1^1,v_2^0,v_3^1, \dots, v_k^{k \bmod 2}$ es un recorrido en $H$
+\end{proof}
+
+
 \end{document}
