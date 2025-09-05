@@ -2,45 +2,25 @@
 #include <string>
 
 
-bool es_todo_l(const std::string& s, const char l) {
+size_t cant_movimientos_para_l(const std::string& s, const size_t ini, const size_t fin, const char l) {
 
-    for (size_t i = 0; i < s.length(); i++) {
-        if (l != s[i]) return false;
-    }
-    return true;
-}
-
-
-int cant_movimientos_para_l(std::string& s, const char l) {
-
-    if (es_todo_l(s, l)) return 0;
-    int cant_movimientos = 0;
-
-    for (size_t i = 0; i < s.length(); i++) {
-        if (s[i] != l)  {
-            s[i] = l;
-            cant_movimientos++;
-        }
+    size_t cant_movimientos = 0;
+    for (size_t i = ini; i < fin; i++) {
+        if (s[i] != l) cant_movimientos++;
     }
     return cant_movimientos;
 }
 
-int l_lindo(const std::string& s, const char l) {
-
-    if (s.length() == 1 && s[0] == l) {
-        return 0;
+size_t l_lindo(const std::string& s, const size_t ini, const size_t fin,  const char l) {
+    const size_t n = fin - ini;
+    if (n == 1) {
+        return (s[ini] == l ? 0 : 1 );
     }
 
-    if (s.length() == 1 && s[0] != l) {
-        return 1;
-    }
+    const size_t mid  =  ini + n/2;
 
-    std::string mitad_izq = s.substr(0, s.length() / 2);
-    std::string mitad_der = s.substr(s.length() / 2);
-
-
-    const int costo1 = cant_movimientos_para_l(mitad_izq, l) + l_lindo(mitad_der, l + 1);
-    const int costo2 = cant_movimientos_para_l(mitad_der, l) + l_lindo(mitad_izq, l + 1);
+    const size_t costo1 = cant_movimientos_para_l(s, ini, mid, l) + l_lindo(s, mid, fin, l + 1);
+    const size_t costo2 = cant_movimientos_para_l(s, mid, fin, l) + l_lindo(s, ini, mid, l + 1);
 
     return std::min(costo1, costo2);
 
@@ -50,11 +30,18 @@ int l_lindo(const std::string& s, const char l) {
 
 int main() {
 
-    const std::string s = "aaaadcbb";
-    const std::string s2 = "bbaaceaa";
+    size_t tests;
+    size_t length_string;
+    std::string input_string;
+
+    std::cin >> tests;
+    for (size_t i = 0; i < tests; i++) {
+        std::cin >> length_string;
+        std::cin >> input_string;
+        std::cout << l_lindo(input_string, 0, length_string, 'a') << std::endl;
+    }
 
 
-    std::cout << l_lindo(s, 'a') << std::endl;
 
     return 0;
 }
