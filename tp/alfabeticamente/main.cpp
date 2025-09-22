@@ -5,7 +5,7 @@
 #include <algorithm>
 using namespace std;
 
-int costo_min_global = INT_MAX;
+
 
 string invertir(const string &s)
 {
@@ -35,7 +35,8 @@ void backtrack(const int pos,
                const vector<int> &costos,
                vector<int> &elegidos,
                const int r,
-               const int N)
+               const int N,
+               int &costo_min_global)
 {
 
     if (r == 0)
@@ -65,37 +66,48 @@ void backtrack(const int pos,
         return;
 
     elegidos.push_back(pos);
-    backtrack(pos + 1, palabras, reversas, costos, elegidos, r - 1, N);
+    backtrack(pos + 1, palabras, reversas, costos, elegidos, r - 1, N, costo_min_global);
     elegidos.pop_back();
 
     // Solo continúa si quedan suficientes elementos para completar la combinación
     if (N - (pos + 1) >= r)
     {
-        backtrack(pos + 1, palabras, reversas, costos, elegidos, r, N);
+        backtrack(pos + 1, palabras, reversas, costos, elegidos, r, N, costo_min_global);
     }
 }
 
-int main()
-{
+int solve() {
+    int costo_min_global = INT_MAX;
     const int N = 3;
-    const int r = 2;
-    // Valor máximo de un entero (infinito)
-    vector<string> palabras = {"za", "yb", "xc"};
-    // Precomputar reversas una sola vez
+    
+    vector<string> palabras = {"abc", "efg", "hij"};
     vector<string> reversas(N);
     for (int i = 0; i < N; ++i)
         reversas[i] = invertir(palabras[i]);
     vector<int> costos = {100, 200, 300};
     vector<int> elegidos;
 
-    backtrack(0, palabras, reversas, costos, elegidos, r, N);
-
-    for (const auto &p : palabras)
-    {
-        cout << p << " ";
+    for (int r = 0; r <= N; ++r) {
+        backtrack(0, palabras, reversas, costos, elegidos, r, N, costo_min_global);
     }
-    cout << endl;
 
-    cout << "Costo mínimo: " << costo_min_global << endl;
+    if(costo_min_global == INT_MAX) {
+        return -1; // Indica que no es posible ordenar
+    } else {
+        return costo_min_global;
+    }
+}
+
+
+
+int main()
+{
+    int resultado = solve();
+    if(resultado == -1) {
+        cout << "No es posible ordenar las palabras con las inversiones dadas." << endl;
+    } else {
+        cout << "El costo mínimo para ordenar las palabras es: " << resultado << endl;
+    }
+
     return 0;
 }
