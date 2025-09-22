@@ -39,21 +39,18 @@ void backtrack(const int pos,
                int &costo_min_global)
 {
 
-    if (r == 0)
-    {
+    if (r == 0) {
         // Construir el arreglo actual sin mutar `palabras`
         vector<string> actual = palabras;
         int costo_local = 0;
 
-        for (auto n : elegidos)
-        {
+        for (auto n : elegidos) {
             cout << n << " ";
             actual[n] = reversas[n];
             costo_local += costos[n];
         }
 
-        if (costo_local < costo_min_global && estaEnOrdenAlfabetico(actual))
-        {
+        if (costo_local < costo_min_global && estaEnOrdenAlfabetico(actual)) {
             costo_min_global = costo_local;
         }
 
@@ -70,21 +67,25 @@ void backtrack(const int pos,
     elegidos.pop_back();
 
     // Solo continúa si quedan suficientes elementos para completar la combinación
-    if (N - (pos + 1) >= r)
-    {
+    if (N - (pos + 1) >= r) {
         backtrack(pos + 1, palabras, reversas, costos, elegidos, r, N, costo_min_global);
     }
 }
 
-int solve() {
+int solve(istream& in, ostream& out) {
     int costo_min_global = INT_MAX;
-    const int N = 3;
-    
-    vector<string> palabras = {"abc", "efg", "hij"};
+    int N;
+    in >> N;
+
+    vector<string> palabras(N);
+    for (int i = 0; i < N; ++i)
+        in >> palabras[i];
     vector<string> reversas(N);
     for (int i = 0; i < N; ++i)
         reversas[i] = invertir(palabras[i]);
-    vector<int> costos = {100, 200, 300};
+    vector<int> costos(N);
+    for (int i = 0; i < N; ++i)
+        in >> costos[i];
     vector<int> elegidos;
 
     for (int r = 0; r <= N; ++r) {
@@ -100,14 +101,7 @@ int solve() {
 
 
 
-int main()
-{
-    int resultado = solve();
-    if(resultado == -1) {
-        cout << "No es posible ordenar las palabras con las inversiones dadas." << endl;
-    } else {
-        cout << "El costo mínimo para ordenar las palabras es: " << resultado << endl;
-    }
-
+int main() {
+    solve(cin, cout);
     return 0;
 }
