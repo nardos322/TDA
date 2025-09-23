@@ -14,6 +14,20 @@ string invertir(const string &s)
 
 
 // DP O(N): dp[i][0] = min costo si palabras[i] sin invertir, dp[i][1] si invertida
+/**
+ * @brief Calcula el costo mínimo para ordenar una secuencia de palabras alfabéticamente,
+ *        permitiendo invertir algunas palabras a un costo dado.
+ *
+ * Dada una lista de palabras, sus versiones invertidas y un vector de costos asociados
+ * a invertir cada palabra, esta función determina el costo mínimo necesario para que
+ * la secuencia de palabras (posiblemente invirtiendo algunas) quede ordenada
+ * lexicográficamente. Si no es posible lograrlo, retorna -1.
+ *
+ * @param palabras Vector de strings con las palabras originales.
+ * @param reversas Vector de strings con las palabras invertidas (cada reversa[i] es la inversión de palabras[i]).
+ * @param costos Vector de costos asociados a invertir cada palabra.
+ * @return El costo mínimo para ordenar la secuencia alfabéticamente, o -1 si no es posible.
+ */
 long long alfabeticamente(const vector<string> &palabras,
                           const vector<string> &reversas,
                           const vector<long long> &costos)
@@ -142,6 +156,14 @@ void test_alfabeticamente() {
         vector<long long> costos = {510, 800, 150};
         long long res = alfabeticamente(palabras, reversas, costos);
         assert(res == 800);
+    }
+    {
+        // Caso 10: Conviene invertir la 2da (más barato)   
+        vector<string> palabras = {"ba", "az"};
+        vector<string> reversas = {"ab", "za"};
+        vector<long long> costos = {100, 1};
+        long long res = alfabeticamente(palabras, reversas, costos);
+        assert(res == 1);
     }
 }
 #endif

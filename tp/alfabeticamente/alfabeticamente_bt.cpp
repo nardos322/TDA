@@ -29,6 +29,45 @@ bool estaEnOrdenAlfabetico(const vector<string> &palabras)
 }
 
 // Numero combinatorio
+/**
+ * @brief Explora por backtracking combinaciones de r índices a partir de pos para minimizar
+ *        el costo de invertir palabras y dejar el arreglo en orden alfabético.
+ *
+ * La función intenta seleccionar exactamente r posiciones del rango [pos, N) cuyos elementos
+ * serán reemplazados por su versión invertida (reversas[i]). En el caso base (r == 0), construye
+ * una copia de palabras, aplica las inversiones indicadas en 'elegidos', suma el costo asociado
+ * y, si el resultado está en orden alfabético (estaEnOrdenAlfabetico), actualiza el mínimo global.
+ *
+ * En el paso recursivo considera dos decisiones:
+ *  - Incluir la posición actual 'pos' en la combinación (decrementando r).
+ *  - Excluir 'pos' y avanzar (solo si N - (pos + 1) >= r, es decir, si quedan suficientes elementos).
+ * La búsqueda corta cuando pos >= N.
+ *
+ * Requisitos:
+ *  - N == palabras.size() == reversas.size() == costos.size()
+ *  - 0 <= pos <= N
+ *  - 0 <= r <= N - pos
+ *  - reversas[i] debe corresponder a la versión invertida de palabras[i].
+ *  - La función externa estaEnOrdenAlfabetico(const vector<string>&) debe estar disponible.
+ *
+ * Complejidad:
+ *  - Tiempo: O(C(N - pos, r) * N), ya que en cada combinación completa se construye y verifica
+ *    un arreglo de tamaño N.
+ *  - Espacio: O(N) por la copia temporal y O(r) en la pila por el camino recursivo.
+ *
+ * Efectos:
+ *  - Modifica temporalmente 'elegidos' durante la exploración.
+ *  - Actualiza 'costo_min_global' por referencia cuando encuentra una solución de menor costo.
+ *
+ * @param pos Índice actual a considerar como candidato de inversión.
+ * @param palabras Vector con las palabras originales.
+ * @param reversas Vector con las versiones invertidas de cada palabra (mismo orden que 'palabras').
+ * @param costos Costo de invertir cada palabra; costos[i] corresponde a palabras[i].
+ * @param elegidos Acumulador mutable de índices seleccionados hasta el momento.
+ * @param r Cantidad de inversiones restantes por seleccionar.
+ * @param N Cantidad total de palabras.
+ * @param costo_min_global Mejor costo encontrado globalmente; se actualiza si se mejora.
+ */
 void backtrack(const int pos,
                const vector<string> &palabras,
                const vector<string> &reversas,
@@ -72,8 +111,43 @@ void backtrack(const int pos,
 
 
 // Complejidad temporal O(N*2^N)
+/**
+ * Calcula el costo mínimo para lograr que una secuencia de palabras quede en orden alfabético
+ * permitiendo invertir (usar la versión reversa) de algunas de ellas. La búsqueda se realiza
+ * mediante backtracking, explorando todas las cantidades posibles de palabras a invertir (de 0 a N).
+ *
+ * Este procedimiento invoca internamente a la función auxiliar `backtrack` para probar combinaciones
+ * y actualizar el costo mínimo global alcanzado.
+ *
+ * Parámetros:
+ * - palabras: Vector con las palabras en su forma original.
+ * - reversas: Vector con las palabras invertidas; debe corresponder uno a uno con `palabras`.
+ * - costos: Vector con el costo de invertir cada palabra (mismo índice que en `palabras`).
+ * - elegidos: Vector utilizado como estructura de trabajo por el backtracking para registrar
+ *             los índices de palabras seleccionadas durante la exploración. Se modifica durante la búsqueda.
+ * - N: Cantidad de palabras a considerar; debe coincidir con los tamaños de `palabras`, `reversas` y `costos`.
+ * - costo_min_global: Referencia al costo mínimo global encontrado. Debe inicializarse con LLONG_MAX
+ *                     antes de llamar; se actualiza si se halla una solución más barata.
+ *
+ * Valor de retorno:
+ * - Devuelve el costo mínimo total para lograr el orden alfabético bajo las reglas descritas.
+ * - Devuelve -1 si no existe una forma válida de ordenar las palabras (cuando `costo_min_global` permanece en LLONG_MAX).
+ *
+ * Precondiciones:
+ * - palabras.size() == reversas.size() == costos.size() == static_cast<size_t>(N).
+ * - `costo_min_global` inicializado a LLONG_MAX.
+ * - `elegidos` puede estar vacío; su contenido se usa/actualiza durante la búsqueda.
+ *
+ * Complejidad:
+ * - Depende de la implementación de `backtrack`. En general, puede ser exponencial en N,
+ *   dado que explora combinaciones para r = 0..N.
+ *
+ * Notas:
+ * - Requiere la disponibilidad de `backtrack` y de LLONG_MAX (incluya <climits>).
+ * - No garantiza que `elegidos` contenga la solución final al terminar, a menos que
+ *   `backtrack` lo gestione explícitamente.
+ */
 long long alfabeticamente(
-                const int pos,
                 const vector<string> &palabras,
                 const vector<string> &reversas,
                 const vector<long long> &costos,
@@ -119,7 +193,7 @@ void solve(istream& in, ostream& out) {
    
     vector<int> elegidos;
 
-    const long long res = alfabeticamente(0, palabras, reversas, costos, elegidos, N, costo_min_global);
+    const long long res = alfabeticamente(palabras, reversas, costos, elegidos, N, costo_min_global);
 
     out << res << '\n';
 }
@@ -229,6 +303,16 @@ void test_alfabeticamente() {
     int N9 = palabras9.size();
     long long res9 = alfabeticamente(0, palabras9, reversas9, costos9, elegidos9, N9, costo_min_global9);
     assert(res9 == 800);
+
+    // Caso 10: Conviene invertir la 2da (más barato)
+    vector<string> palabras10 = {"ba", "az"};
+    vector<string> reversas10 = {"ab", "za"};
+    vector<long long> costos10 = {100, 1};
+    vector<int> elegidos10;
+    long long costo_min_global10 = LLONG_MAX;
+    int N10 = palabras10.size();
+    long long res10 = alfabeticamente(0, palabras10, reversas10, costos10, elegidos10, N10, costo_min_global10);
+    assert(res10 == 1);
 
 }
 #endif

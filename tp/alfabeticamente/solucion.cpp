@@ -5,7 +5,36 @@ static inline string invertir(const string& s) {
     return string(s.rbegin(), s.rend());
 }
 
-// DP: O(N * L), memoria O(1)
+
+/**
+ * @brief Calcula el costo mínimo para que una secuencia de palabras sea no decreciente
+ *        lexicográficamente, permitiendo invertir algunas palabras con un costo asociado.
+ *
+ * La función decide, para cada palabra, si se deja tal cual o se usa su versión invertida,
+ * de modo que la secuencia resultante (palabra por palabra) sea no decreciente en orden
+ * lexicográfico. El costo total es la suma de los costos de las palabras que se invierten.
+ *
+ * - Si no es posible lograr una secuencia no decreciente bajo estas reglas, devuelve -1.
+ * - Si el número de palabras es 0, devuelve 0.
+ *
+ * Parámetros:
+ *   @param palabras  Vector de palabras originales, de tamaño N.
+ *   @param reversas  Vector de las palabras correspondientes invertidas, de tamaño N.
+ *                    Se asume (no se verifica) que reversas[i] es la inversión de palabras[i].
+ *   @param costos    Vector de costos de inversión por posición, de tamaño N, con costos[i] ≥ 0.
+ *
+ * Valor de retorno:
+ *   @return long long  Costo mínimo total para conseguir una secuencia no decreciente usando
+ *                      cada palabra en su forma original o invertida; -1 si es imposible.
+ *
+ * Detalles:
+ *   - El orden se evalúa usando la comparación lexicográfica estándar de std::string.
+ *   - La secuencia resultante debe ser no decreciente (cada elemento es >= al anterior).
+ *
+ * Complejidad:
+ *   - Tiempo: O(N), donde N es la cantidad de palabras. Cada palabra se procesa una vez.
+ *   - Memoria adicional: O(1)
+ */
 long long alfabeticamente(const vector<string> &palabras,
                           const vector<string> &reversas,
                           const vector<long long> &costos) {
@@ -127,6 +156,15 @@ void test_alfabeticamente() {
         vector<long long> costos = {510, 800, 150};
         long long res = alfabeticamente(palabras, reversas, costos);
         assert(res == 800);
+    }
+
+    {
+        // Caso 10: Conviene invertir la 2da (más barato)
+        vector<string> palabras = {"ba", "az"};
+        vector<string> reversas = {"ab", "za"};
+        vector<long long> costos = {100, 1};
+        long long res = alfabeticamente(palabras, reversas, costos);
+        assert(res == 1);
     }
 }
 #endif
