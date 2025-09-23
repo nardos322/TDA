@@ -81,7 +81,6 @@ void solve(istream& in, ostream& out) {
 
 
 
-// ...existing code...
 
 #ifdef LOCAL
 void test_alfabeticamente_extra() {
@@ -143,7 +142,6 @@ void test_alfabeticamente_extra() {
 }
 #endif
 
-// ...existing code...
 
 int main() {
     #ifdef LOCAL
