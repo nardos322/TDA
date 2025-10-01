@@ -39,27 +39,19 @@ int vacations_topdown(const vector<vector<int>> &actividades, const int N)
         // Opcion de descansar
         int best =  1 + dp(dia + 1, 0); // descansar
 
-        // Solo una actividad disponible (competir O gimnasio)
-        if (actividades[dia].size() == 1 && last != actividades[dia][0])
-        {
-            best = min(best, dp(dia + 1, actividades[dia][0]));
+         // Verificar si puedo competir (actividad 1)
+        if (last != 1 && find(actividades[dia].begin(), actividades[dia].end(), 1) != actividades[dia].end()) {
+            best = min(best, dp(dia + 1, 1));
         }
 
-        // Dos actividades disponibles (competir Y gimnasio)
-        if (actividades[dia].size() == 2)
-        {
-            if (last != actividades[dia][0])
-            {
-                best = min(best, dp(dia + 1, actividades[dia][0]));
-            }
-            if (last != actividades[dia][1])
-            {
-                best = min(best, dp(dia + 1, actividades[dia][1]));
-            }
+        // Verificar si puedo ir al gimnasio (actividad 2)
+        if (last != 2 && find(actividades[dia].begin(), actividades[dia].end(), 2) != actividades[dia].end()) {
+            best = min(best, dp(dia + 1, 2));
         }
 
-        
+
         return memo[dia][last] = best;
+
     };
 
     return dp(0, 0);
@@ -228,13 +220,13 @@ int main()
     cout << vacations_bitmask_topdown(b, 4) << "\n";
     cout << "Ambas versiones deben dar el mismo resultado!" << "\n";
 
-    cout << "Resultado con path: " << ;
+    cout << "Resultado con path:\n";
     pair<int, vector<int>> result_with_path = vacations_2topdown_with_path(a, 4);
     cout << "Días mínimos de descanso: " << result_with_path.first << "\n";
     cout << "Secuencia: ";
     for (int i = 0; i < result_with_path.second.size(); i++) {
         int act = result_with_path.second[i];
-        cout << "Día" << i << ":";
+        cout << "Día" << i << ": ";
         if (act == 0) cout << "descansar ";
         else if (act == 1) cout << "competir ";
         else cout << "gimnasio ";
