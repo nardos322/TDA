@@ -18,7 +18,7 @@
 
 # Directorios de construcción
 **/cmake-build-debug/
-
+**/build/
 # Ignorar archivos generados por LaTeX en cualquier carpeta
 **/*.aux
 **/*.bbl
