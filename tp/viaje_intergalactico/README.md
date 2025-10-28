@@ -1,5 +1,5 @@
 # B. Viaje Intergaláctico
-[Problem - B - Codeforces](https://codeforces.com/group/yuAAIJ8c1R/contest/644999/problem/B)
+[Problem - B - Codeforces](https://codeforces.com/group/yuAAIJ8c1R/contest/644999/problem/B)  
 **Tiempo límite:** 2 s  
 **Memoria límite:** 256 MB
 
