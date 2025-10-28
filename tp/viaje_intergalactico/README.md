@@ -230,4 +230,4 @@ g++ -O2 -std=c++17 -Wall -Wextra main.cpp -o viaje
 
 ## Licencia
 
-Agrega aquí la licencia de tu preferencia (MIT, Apache-2.0, etc.).
+Nahuel Prieto
