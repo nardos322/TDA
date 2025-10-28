@@ -186,10 +186,10 @@ g++ -O2 -std=c++17 -Wall -Wextra main.cpp -o viaje
 
 ---
 
-
+Para un análisis de la complejidad más formal y una versión maquetada de este documento, podes ver el [PDF generado con LaTeX aquí](./analisis_complejidad/analisis_algoritmo.pdf).
 
 ---
 
 ## Licencia
 
-Agrega aquí la licencia de tu preferencia (MIT, Apache-2.0, etc.).
+Nahuel Prieto

@@ -127,11 +127,15 @@ void solve(istream &in, ostream &out)
     {
         int k;
         in >> k;
+
+        auto &set_tiempos = tiempo_viajeros[i];
+        set_tiempos.reserve(k);
+
         for (int j = 0; j < k; ++j)
         {
             long long t;
             in >> t;
-            tiempo_viajeros[i].insert(t);
+            set_tiempos.insert(t);
         }
     }
 
