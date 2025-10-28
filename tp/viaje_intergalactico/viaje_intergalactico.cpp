@@ -2,12 +2,12 @@
 using namespace std;
 
 
-void initialize_single_source(vector<long long>& tiempo, int source) {
+void initialize_single_source(vector<long long>& tiempo, const int source) {
     fill(tiempo.begin(), tiempo.end(), LLONG_MAX);
     tiempo[source] = 0;
 }
 
-void relax(int u, int v, long long w, vector<long long>& tiempo, vector<unordered_set<long long>>& tiempo_viajeros) {
+void relax(const int u, const int v, const long long w, vector<long long>& tiempo, const vector<unordered_set<long long>>& tiempo_viajeros) {
     long long tiempo_salida = tiempo[u];
     const auto& viajeros_en_planeta = tiempo_viajeros[u];
     while (viajeros_en_planeta.find(tiempo_salida) != viajeros_en_planeta.end()) {
@@ -19,7 +19,7 @@ void relax(int u, int v, long long w, vector<long long>& tiempo, vector<unordere
     }
 }
 
-void dijkstra(int source, int n, const vector<vector<pair<int, long long>>>& G, vector<long long>& tiempo, vector<unordered_set<long long>>& tiempo_viajeros) {
+void dijkstra(const int source, const int n, const vector<vector<pair<int, long long>>>& G, vector<long long>& tiempo, const vector<unordered_set<long long>>& tiempo_viajeros) {
     initialize_single_source(tiempo, source);
     priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
     pq.push({0, source});
@@ -40,7 +40,7 @@ void dijkstra(int source, int n, const vector<vector<pair<int, long long>>>& G, 
     
 }
 
-int viaje_intergalactico(int n, vector<vector<pair<int, long long>>>& G, vector<long long>& tiempo, vector<unordered_set<long long>>& tiempo_viajeros) {
+long long viaje_intergalactico(const int n, const vector<vector<pair<int, long long>>>& G, vector<long long>& tiempo, const vector<unordered_set<long long>>& tiempo_viajeros) {
 
     dijkstra(1, n, G, tiempo, tiempo_viajeros);
 
@@ -61,6 +61,7 @@ void solve(istream& in, ostream& out) {
         long long w;
         in >> u >> v >> w;
         G[u].push_back({v, w});
+        G[v].push_back({u, w});
     }
 
     for (int i = 1; i <= n; ++i) {
