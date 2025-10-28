@@ -163,7 +163,7 @@ Leer `n l r` desde `stdin` y escribir un único entero en `stdout`.
 
 Enunciado adaptado del problema **“C. Ale y los 1s”** (traducción al español).
 
-
+---
 # Documentación del algoritmo `ale_1s`
 
 ## Resumen
