@@ -227,23 +227,6 @@ g++ -O2 -std=c++17 -Wall -Wextra main.cpp -o viaje
 ./viaje < input.txt
 ```
 
----
-
-## Estructura sugerida del repo
-
-```
-.
-├── src/
-│   └── main.cpp
-├── tests/
-│   ├── sample1.in
-│   ├── sample1.out
-│   ├── sample2.in
-│   └── sample2.out
-└── README.md
-```
-
----
 
 ## Licencia
 
