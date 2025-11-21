@@ -2,40 +2,6 @@
 
 using namespace std;
 
-int indice_espejo(const vector<int>& A, const int l, const int r) {
-    if (l > r) {
-        return -1; // Caso base: no se encontró el índice espejo
-    }
-
-    if (const int i = (l + r) / 2; A[i] ==  i + 1) {
-        return i + 1;
-    } else if (A[i] > i + 1) {
-        return indice_espejo(A, l, i - 1);
-    } else {
-        return indice_espejo(A, i + 1, r);
-    }
-
-
-}
-
-
-int potencia_logaritmica(const int a, const int b) {
-    if (b == 0) {
-        return 1;
-    }
-    if (b == 1) {
-        return a;
-    }
-
-    const int mitad = potencia_logaritmica(a, b/2);
-
-    if ( b % 2 == 0) {
-        return mitad * mitad;
-    } else {
-        return a * mitad * mitad;
-    }
-}
-
 
 // Numero combinatorio
 void backtrack(const int pos, vector<int> elegidos, const int r, const int N) {
