@@ -81,6 +81,36 @@ pair<int, int> optipagos_bottomup(const vector<int>& B, const int c) {
     return dp[n][c];
 }
 
+pair<int, int> optipagos_espacio_optimizado(const vector<int>& B, const int c) {
+    const int n = B.size();
+    
+    // 1. Vector 'anterior' (hace de fila i-1).
+    // Lo inicializamos como la Fila 0 (caso base: 0 billetes)
+    vector<pair<int, int>> anterior(c + 1, {INF, INF});
+    anterior[0] = {0, 0}; // Base: Deuda 0 con 0 billetes es posible
+
+    // 2. Vector 'actual' (hace de fila i).
+    vector<pair<int, int>> actual(c + 1);
+
+    for(int i = 1; i <= n; i++){
+        for(int j = 0; j <= c; j++) {
+            // Usamos 'anterior' para leer los datos viejos
+            // 'actual' recibe los datos nuevos
+            actual[j] = mejor(
+                add_pairs({B[i-1], 1}, anterior[max(0, j - B[i-1])]), 
+                anterior[j]
+            );
+        }
+        
+    
+        // Pasamos el relevo: Lo que hoy fue "actual", mañana será "anterior"
+        anterior = actual;
+    }
+
+    // Al final, la respuesta quedó en 'anterior' (porque hicimos el cambio en la última vuelta)
+    return anterior[c];
+}
+
 int main() {
     vector<int> B = {2,3,5,10,20,20};
     int c = 14;
@@ -89,9 +119,11 @@ int main() {
     auto res = optipagos_bt(B, B.size() - 1, c);
     auto res2 = optipagos_topdown(B, c);
     auto res3 = optipagos_bottomup(B,c);
+    auto res4 = optipagos_espacio_optimizado(B, c);
     
     cout << "optipagos_bt: "<< res.second << endl;
     cout << "optipagos_topdown: "<< res2.second << endl;
-    cout << "optipagos_bottomup" << res3.second << endl;
+    cout << "optipagos_bottomup " << res3.second << endl;
+    cout << "optipagos_espacio_optimizado "<< res4.second << "\n";
    
 }
