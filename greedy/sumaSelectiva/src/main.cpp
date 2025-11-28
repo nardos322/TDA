@@ -34,8 +34,6 @@ ResultSuma suma_selectiva(std::vector<int>& x, const int k) {
         subconjunto.push_back(x[i]);
     }
 
-    std::ranges::sort(subconjunto);
-
     return {total_suma, subconjunto};
 }
 
