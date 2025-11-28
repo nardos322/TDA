@@ -4,7 +4,7 @@
 #include <vector>
 
 struct ResultSuma {
-    int total_suma;
+    long long suma; // Usamos long long para evitar overflow
     std::vector<int> subconjunto;
 };
 
@@ -27,7 +27,7 @@ ResultSuma suma_selectiva(std::vector<int>& x, const int k) {
     std::ranges::sort(x, std::greater<int>());
     std::vector<int> subconjunto;
     subconjunto.reserve(k);
-    int total_suma = 0;
+    long long total_suma = 0;
 
     for (int i = 0; i < k; i++) {
         total_suma += x[i];
@@ -49,36 +49,46 @@ ResultSuma suma_selectiva(std::vector<int>& x, const int k) {
  *            Espacio: O(k)
  */
 ResultSuma suma_selectiva_eficiente(const std::vector<int>& x, const int k) {
-    if (k >= x.size()) {
-        throw std::invalid_argument("k debe ser menor que el tamaño de x");
+    // 1. Validación corregida
+    if (k < 0 || k > x.size()) {
+        throw std::invalid_argument("k inválido");
     }
+    
+    // Caso borde: k=0
+    if (k == 0) return {0, {}};
 
+    // Min-Heap: Mantiene los k elementos más grandes vistos hasta ahora.
+    // La cima (top) es el "más pequeño de los grandes", actuando como portero.
     std::priority_queue<int, std::vector<int>, std::greater<int>> min_heap;
-    int total_suma = 0;
-    std::vector<int> subconjunto;
-    subconjunto.reserve(k);
 
-    for (int i = 0; i < x.size(); i++) {
+    for (int valor : x) {
         if (min_heap.size() < k) {
-            min_heap.push(x[i]);
+            min_heap.push(valor);
         } else {
-            if (x[i] > min_heap.top()) {
+            // Solo si el nuevo valor es mayor que el "peor" de nuestro top-k,
+            // vale la pena hacer el intercambio.
+            if (valor > min_heap.top()) {
                 min_heap.pop();
-                min_heap.push(x[i]);
+                min_heap.push(valor);
             }
         }
     }
 
+    long long total_suma = 0;
+    std::vector<int> subconjunto;
+    subconjunto.reserve(k);
+
     while (!min_heap.empty()) {
-        total_suma += min_heap.top();
-        subconjunto.push_back(min_heap.top());
+        int val = min_heap.top();
+        total_suma += val;
+        subconjunto.push_back(val);
         min_heap.pop();
     }
-
-
+    
+    // Opcional: Si quieres devolverlos de mayor a menor como el Greedy original
+    // std::reverse(subconjunto.begin(), subconjunto.end());
 
     return {total_suma, subconjunto};
-
 }
 
 
