@@ -4,7 +4,9 @@ using ll = long long;
 
 const ll NEG_INF = -1e18;
 
-ll astro_trade_bt(const vector<ll> &p, int j, int c) {
+//mgn(p,j,c) = maxima_ganancia_neta usando dias [1..j] y teniendo 
+//c asteroides al final del dia j
+ll mgn_bt(const vector<ll> &p, int j, int c) {
     // 1. Validaciones de estado imposible
     // c < 0: Stock negativo
     // c > j: Tener más stock que días transcurridos
@@ -22,22 +24,21 @@ ll astro_trade_bt(const vector<ll> &p, int j, int c) {
 
     // Opcion A: Comprar un asteroide hoy
     // Significa que ayer (j-1) teníamos c-1 asteroides
-    ll res_compre = astro_trade_bt(p, j - 1, c - 1) - precio_hoy;
+    ll res_compre = mgn_bt(p, j - 1, c - 1) - precio_hoy;
 
     // Opcion B: Vender un asteroide hoy
     // Significa que ayer (j-1) teníamos c+1 asteroides
-    ll res_vendi = astro_trade_bt(p, j - 1, c + 1) + precio_hoy;
-
+    ll res_vendi = mgn_bt(p, j - 1, c + 1) + precio_hoy;
     // Opcion C: No hacer nada hoy
     // Significa que ayer (j-1) teníamos c asteroides
-    ll res_wait = astro_trade_bt(p, j - 1, c);
+    ll res_wait = mgn_bt(p, j - 1, c);
 
     // Retornar la mejor opción
     return max({res_compre, res_vendi, res_wait});
 
 }
 
-ll astro_trade_topdown(const vector<ll> &p){
+ll mgn_topdown(const vector<ll> &p){
     int n = (int)p.size();
 
     // 1. Declaramos la MEMO una sola vez aquí (el tamaño es N, no j)
@@ -84,7 +85,7 @@ int main()
     vector<ll> precios = {3, 2, 5, 6};
     vector<ll> precios2 = {3, 6, 10};
 
-    cout << astro_trade_topdown(precios) << "\n";
-    cout << astro_trade_topdown(precios2) << "\n";
+    cout << mgn_topdown(precios) << "\n";
+    cout << mgn_topdown(precios2) << "\n";
     return 0;
 }
