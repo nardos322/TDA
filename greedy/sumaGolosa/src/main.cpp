@@ -24,12 +24,12 @@ int suma_golosa(vector<int>& v, const int i, int costo_total) {
 
 // implementacion corecta
 long long suma_golosa_2(vector<int>& v) {
-    priority_queue<int, vector<int>, greater<int>> heap(v.begin(), v.end());
+    priority_queue<long long, vector<long long>, greater<long long>> heap(v.begin(), v.end());
     long long costo_total = 0;
 
     while (heap.size() > 1) {
-        const int a = heap.top(); heap.pop();
-        const int b = heap.top(); heap.pop();
+        const long long a = heap.top(); heap.pop();
+        const long long b = heap.top(); heap.pop();
 
         long long suma = a + b;
         costo_total += suma;
