@@ -23,15 +23,15 @@ int suma_golosa(vector<int>& v, const int i, int costo_total) {
 
 
 // implementacion corecta
-int suma_golosa_2(vector<int>& v) {
+long long suma_golosa_2(vector<int>& v) {
     priority_queue<int, vector<int>, greater<int>> heap(v.begin(), v.end());
-    int costo_total = 0;
+    long long costo_total = 0;
 
     while (heap.size() > 1) {
         const int a = heap.top(); heap.pop();
         const int b = heap.top(); heap.pop();
 
-        int suma = a + b;
+        long long suma = a + b;
         costo_total += suma;
         heap.push(suma);
     }
@@ -44,7 +44,7 @@ int main() {
     vector v = {1, 2, 3, 4, 5};
     const int res = suma_golosa(v, 1, 0);
     cout << "El resultado es: " << res << endl;
-    const int res2 = suma_golosa_2(v);
+    const long long res2 = suma_golosa_2(v);
     cout <<"El resultado es: " << res2 << endl;
 
     return 0;
