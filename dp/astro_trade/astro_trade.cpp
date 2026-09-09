@@ -114,6 +114,8 @@ ll mgn_bottomup_optimizado(const vector<ll>& p) {
     return anterior[0];
 }
 
+
+
 int main()
 {
     ios::sync_with_stdio(false);
