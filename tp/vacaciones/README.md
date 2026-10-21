@@ -87,6 +87,18 @@ En el tercer caso de prueba, Vasya puede hacer deporte el día $1$ o el día $2$
 
 ---
 
+## Idea principal
+
+Para cada día, Vasya tiene hasta tres decisiones:
+
+* descansar;
+* competir (si hay competencia y no compitió el día anterior);
+* hacer deporte (si el gimnasio está abierto y no hizo deporte el día anterior).
+
+La clave es que, para decidir qué conviene hoy, solo importa qué actividad realizó ayer. Por eso el estado de la programación dinámica necesita recordar únicamente la actividad del día anterior.
+
+---
+
 ## Modelado de la Solución
 
 El problema se puede resolver utilizando **Programación Dinámica (Enfoque Top-Down con Memoización)**, ya que las decisiones tomadas en el día actual dependen únicamente de la actividad realizada el día inmediatamente anterior y presentan superposición de subproblemas.
@@ -135,18 +147,31 @@ $$\text{dp}(i, j) = \begin{cases} 0 & \text{si } i \ge n \\ \min \begin{cases} 1
 
 ### 3. Llamada Inicial
 
-La respuesta al problema se obtiene invocando `dp(0, 0)`. Comenzamos en el día $0$ y simulamos que el día anterior Vasya descansó ($j = 0$), ya que esto no impone ninguna restricción sobre las actividades que puede elegir en su primer día de vacaciones.
+La respuesta al problema se obtiene invocando `dp(0, 0)`. Comenzamos en el día $0$ con `j = 0` para representar el estado inicial **sin actividad previa real**; no significa que Vasya haya descansado un día de vacaciones antes de empezar. Esta codificación simplemente indica que, en el primer día, no hay una actividad anterior que restrinja competir o hacer deporte.
 
 ### 4. Análisis de Complejidad
 
-* **Complejidad Temporal:** Existen $n$ posibles valores para el día $i$ y $3$ posibles valores para la actividad previa $j$. Esto nos da un total de $3 \cdot n$ estados únicos. Como cada estado se calcula una única vez (gracias a la tabla de memoización `memo[N][3]`) y realiza a lo sumo $3$ transiciones en tiempo constante $\mathcal{O}(1)$, la complejidad temporal total es $\mathcal{O}(n)$.
-* **Complejidad Espacial:** Se utiliza una matriz `memo` de dimensiones $n \times 3$ y la pila de llamadas recursivas alcanza una profundidad máxima de $n$. Por lo tanto, la complejidad espacial es $\mathcal{O}(n)$.
+* **Tiempo: O(n).** Hay $n$ días y $3$ posibles valores de actividad previa (`j = 0, 1, 2`), es decir, $3n$ estados. Como esos 3 estados son una constante y cada estado se resuelve una sola vez con memoización, el tiempo total es lineal en $n$.
+* **Memoria: O(n).** La tabla `memo` tiene tamaño $n \times 3$ y la recursión tiene profundidad máxima $n$. El factor 3 es constante, por lo que el uso de memoria total también es lineal en $n$.
+
+---
+
+## Compilación y ejecución
+
+```bash
+g++ -std=c++17 -O2 -Wall vacaciones.cpp -o vacaciones
+./vacaciones
+```
 
 ---
 
 ## Implementación
 
-La solución completa en C++ se encuentra disponible en [`vacaciones.cpp`](./vacaciones.cpp).
+La solución implementada en [`vacaciones.cpp`](./vacaciones.cpp) utiliza un enfoque **top-down con memoización**:
+
+* define `dp(i, j)` de forma recursiva;
+* guarda resultados ya calculados en `memo[i][j]`;
+* evita recomputar subproblemas y mantiene la complejidad lineal.
 
 ---
 *Resuelto por **Nahuel Prieto***
